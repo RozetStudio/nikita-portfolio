@@ -1,0 +1,171 @@
+---
+import SilkBackground from "../visuals/SilkBackground.astro";
+import TechMarquee from "./TechMarquee.astro";
+import StarMark from "../ui/StarMark.astro";
+---
+
+<section id="top" data-hero class="relative flex min-h-[100svh] flex-col overflow-hidden bg-bg">
+  <SilkBackground />
+
+  <!-- Защита текста: тёмный радиальный купол поверх фона -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 z-[1] bg-[radial-gradient(58%_46%_at_50%_42%,rgba(3,3,3,0.7),transparent_74%)]"
+  ></div>
+
+  <!-- Световой столб -->
+  <div
+    aria-hidden="true"
+    class="absolute left-1/2 top-0 z-[1] h-[52%] w-px -translate-x-1/2 animate-beam bg-gradient-to-b from-white/30 via-white/10 to-transparent"
+  ></div>
+
+  <!-- Затемнения сверху и снизу для читаемости -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-x-0 top-0 z-[1] h-36 bg-gradient-to-b from-bg via-bg/60 to-transparent"
+  ></div>
+  <div
+    aria-hidden="true"
+    class="absolute inset-x-0 bottom-0 z-[1] h-44 bg-gradient-to-t from-bg via-bg/70 to-transparent"
+  ></div>
+
+  <!-- Пылинки -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-[1] hidden sm:block">
+    <span
+      class="absolute left-[18%] top-[30%] h-1 w-1 animate-float rounded-full bg-white/60"
+      style="animation-delay:0s;animation-duration:9s"
+    ></span>
+    <span
+      class="absolute left-[30%] top-[58%] h-1 w-1 animate-float rounded-full bg-white/40"
+      style="animation-delay:1.2s;animation-duration:11s"
+    ></span>
+    <span
+      class="absolute left-[68%] top-[26%] h-1.5 w-1.5 animate-float rounded-full bg-white/50"
+      style="animation-delay:2.1s;animation-duration:10s"
+    ></span>
+    <span
+      class="absolute left-[80%] top-[48%] h-1 w-1 animate-float rounded-full bg-white/60"
+      style="animation-delay:0.6s;animation-duration:13s"
+    ></span>
+    <span
+      class="absolute left-[52%] top-[18%] h-1 w-1 animate-float rounded-full bg-white/35"
+      style="animation-delay:3s;animation-duration:12s"
+    ></span>
+    <span
+      class="absolute left-[88%] top-[70%] h-1 w-1 animate-float rounded-full bg-white/30"
+      style="animation-delay:1.8s;animation-duration:9s"
+    ></span>
+    <span
+      class="absolute left-[10%] top-[64%] h-1.5 w-1.5 animate-float rounded-full bg-white/25"
+      style="animation-delay:2.6s;animation-duration:14s"
+    ></span>
+    <span
+      class="absolute left-[42%] top-[74%] h-1 w-1 animate-float rounded-full bg-white/40"
+      style="animation-delay:0.9s;animation-duration:10s"
+    ></span>
+  </div>
+
+  <!-- Контент -->
+  <div class="container-page relative z-10 flex flex-1 flex-col items-center justify-center gap-6 pb-14 pt-32 text-center sm:pt-36">
+    <span class="section-badge" data-reveal>
+      <StarMark class="h-3 w-3 text-white/80" />
+      Фриланс-разработчик
+    </span>
+
+    <h1
+      data-reveal
+      data-reveal-delay="80"
+      class="max-w-[820px] text-[clamp(2.5rem,6.6vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-balance"
+    >
+      Лендинги, боты, сайты и&nbsp;скрипты, которые работают.
+    </h1>
+
+    <p
+      data-reveal
+      data-reveal-delay="160"
+      class="max-w-[560px] text-[15px] leading-relaxed text-fg-muted sm:text-lg"
+    >
+      Собираю под задачу: от продающей страницы до Telegram-бота с&nbsp;оплатой. Без лишних
+      согласований и&nbsp;срывов сроков.
+    </p>
+
+    <div
+      data-reveal
+      data-reveal-delay="240"
+      class="flex flex-wrap items-center justify-center gap-3 pt-2"
+    >
+      <a href="#contact" class="btn btn-primary">
+        Обсудить проект
+      </a>
+      <a href="#portfolio" class="btn btn-ghost">
+        Смотреть портфолио
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-4 w-4"
+          aria-hidden="true"
+        >
+          <path d="M12 5v14m0 0 6-6m-6 6-6-6"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Стеклянный знак -->
+    <div
+      class="relative mt-8"
+      data-parallax="14"
+      style="transform: translate3d(calc(var(--hx, 0) * 14px), calc(var(--hy, 0) * 10px), 0)"
+    >
+      <div data-reveal data-reveal-delay="320" class="relative">
+        <div
+          aria-hidden="true"
+          class="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.08] blur-2xl"
+        ></div>
+        <div class="glass-tile relative flex h-24 w-24 items-center justify-center rounded-[26px] border border-line-strong">
+          <StarMark class="h-9 w-9 text-fg" />
+        </div>
+        <div
+          aria-hidden="true"
+          class="absolute left-1/2 top-full h-20 w-px -translate-x-1/2 bg-gradient-to-b from-white/25 to-transparent"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Лента технологий внизу hero -->
+  <div class="relative z-10 pb-2 sm:pb-3">
+    <TechMarquee />
+  </div>
+</section>
+
+<style is:global>
+  /* Скрываем hero-контент до reveal только при включённом JS;
+     если скрипт не загрузился — сработает страховка ниже */
+  html.js [data-hero] [data-reveal] {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html.js [data-hero] [data-reveal] {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import { initHeroParallax } from "../../scripts/hero-parallax";
+
+  initHeroParallax();
+
+  // Страховка: если reveal-модуль не отработал, показываем hero
+  window.setTimeout(() => {
+    if (!document.documentElement.classList.contains("reveal-done")) {
+      document.querySelectorAll<HTMLElement>("[data-hero] [data-reveal]").forEach((el) => {
+        el.style.opacity = "1";
+      });
+    }
+  }, 2500);
+</script>

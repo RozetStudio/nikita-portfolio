@@ -41,7 +41,7 @@ import StarMark from "../ui/StarMark.astro";
       aria-expanded="false"
       aria-controls="mobile-menu"
       aria-label="Открыть меню"
-      class="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/[0.03] text-fg transition hover:border-line-strong md:hidden"
+      class="relative flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/[0.03] text-fg transition hover:border-line-strong md:hidden"
     >
       <span aria-hidden="true" class="burger-line"></span>
       <span aria-hidden="true" class="burger-line"></span>
@@ -169,7 +169,7 @@ import StarMark from "../ui/StarMark.astro";
     transition-delay: 0.22s;
   }
 
-  /* Бургер-морф */
+  /* Бургер-морф: анимируется только transform — плавно, на композиторе */
   [data-menu-open] .burger-line {
     position: absolute;
     left: 10px;
@@ -177,9 +177,10 @@ import StarMark from "../ui/StarMark.astro";
     height: 2px;
     border-radius: 2px;
     background: currentColor;
+    transform-origin: center;
     transition:
-      top 0.3s var(--ease-out-expo),
-      transform 0.3s var(--ease-out-expo);
+      transform 0.32s var(--ease-out-expo),
+      opacity 0.2s linear;
   }
   [data-menu-open] .burger-line:first-child {
     top: 15px;
@@ -188,12 +189,10 @@ import StarMark from "../ui/StarMark.astro";
     top: 23px;
   }
   [data-menu-open][aria-expanded="true"] .burger-line:first-child {
-    top: 19px;
-    transform: rotate(45deg);
+    transform: translateY(4px) rotate(45deg);
   }
   [data-menu-open][aria-expanded="true"] .burger-line:last-child {
-    top: 19px;
-    transform: rotate(-45deg);
+    transform: translateY(-4px) rotate(-45deg);
   }
 </style>
 

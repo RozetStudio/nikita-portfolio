@@ -15,6 +15,7 @@ void main() {
 
 // Монохромный silk: доменный warp через итеративные sin/cos (классическая
 // техника "Silky" на шейдертой, переписанная под ч/б палитру проекта).
+// MAX_ITER 4 — компромисс цены и картинки (пятая итерация почти не видна).
 const FRAG = `#version 300 es
 precision highp float;
 
@@ -25,7 +26,7 @@ uniform vec2 u_pointer;
 out vec4 fragColor;
 
 #define TAU 6.28318530718
-#define MAX_ITER 5
+#define MAX_ITER 4
 
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution) / min(u_resolution.x, u_resolution.y);
@@ -68,7 +69,7 @@ export function initSilk(): void {
     antialias: false,
     depth: false,
     stencil: false,
-    powerPreference: "low-power",
+    powerPreference: "high-performance",
   });
 
   if (reducedQuery.matches || !gl) {
@@ -117,15 +118,18 @@ export function initSilk(): void {
   const uPointer = gl.getUniformLocation(program, "u_pointer");
 
   const coarse = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
-  const dprCap = coarse ? 1 : 1.5;
   const frameMs = coarse ? 1000 / 30 : 1000 / 60;
+
+  // Сниженная внутренняя плотность рендера: эффект мягкий, апскейл незаметен,
+  // а количество фрагментов (и цена шейдера) падает в несколько раз.
+  let renderScale = coarse ? 0.5 : 0.66;
 
   let width = 0;
   let height = 0;
   const resize = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
-    const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
-    const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+    // DPR 1: silk — размытая текстура, повышенная плотность не видна
+    const w = Math.max(1, Math.round(canvas.clientWidth * renderScale));
+    const h = Math.max(1, Math.round(canvas.clientHeight * renderScale));
     if (w === width && h === height) return;
     width = w;
     height = h;
@@ -156,11 +160,17 @@ export function initSilk(): void {
   let time = 0;
   let visible = true;
 
+  // Адаптивное качество: если fps стабильно низкий — снижаем плотность один раз
+  let perfWindow = 0;
+  let perfFrames = 0;
+  let perfLast = performance.now();
+
   const frame = (now: number) => {
     if (!running) return;
     raf = requestAnimationFrame(frame);
     if (!visible || document.hidden) {
       last = now;
+      perfLast = now;
       return;
     }
     const delta = now - last;
@@ -169,6 +179,19 @@ export function initSilk(): void {
     if (accumulated < frameMs) return;
     time += accumulated / 1000;
     accumulated = 0;
+
+    // контроль fps (окно ~2 c)
+    perfFrames += 1;
+    perfWindow = now - perfLast;
+    if (perfWindow >= 2000) {
+      const fps = (perfFrames * 1000) / perfWindow;
+      perfFrames = 0;
+      perfLast = now;
+      if (fps < 45 && renderScale > 0.4) {
+        renderScale = Math.max(0.4, renderScale * 0.75);
+        resize();
+      }
+    }
 
     pointerX += (targetX - pointerX) * 0.06;
     pointerY += (targetY - pointerY) * 0.06;
