@@ -1,0 +1,36 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+out/
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+
+# os
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editors
+.idea/
+.vscode/
+*.swp
+
+# qa tools
+.lighthouseci/
+playwright-report/
+test-results/
+.eslintcache/
+
+# agent skills — dev-инструменты, в рантайме не нужны
+.agents/
+skills-lock.json

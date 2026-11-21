@@ -1,0 +1,13 @@
+{
+  "name": "Никита — лендинги, Telegram-боты, сайты и скрипты",
+  "short_name": "Никита",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#070707",
+  "theme_color": "#070707",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,39 @@
+# VCS и служебное
+.git
+.gitignore
+.gitattributes
+.github
+
+# Зависимости и сборка
+node_modules
+dist
+.astro
+
+# Секреты и окружение
+.env
+.env.*
+!.env.example
+
+# Dev-инструменты и документация (в образ не нужны)
+.agents
+skills-lock.json
+docs
+*.md
+*.log
+.eslintcache
+
+# QA-артефакты
+.lighthouseci
+playwright-report
+test-results
+
+# ОС
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker-файлы самого образа
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+docker-compose.dev.yml
