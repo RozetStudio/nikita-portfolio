@@ -1,0 +1,56 @@
+---
+import StarMark from "../ui/StarMark.astro";
+import { SITE_NAME, SITE_ROLE, TELEGRAM_URL, VK_URL, isPlaceholder } from "@/config/site";
+
+// TODO: ссылки Telegram/VK берутся из .env (TELEGRAM_URL, VK_URL)
+const telegramStub = isPlaceholder(TELEGRAM_URL);
+const vkStub = isPlaceholder(VK_URL);
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line">
+  <div class="container-page flex flex-col items-center justify-between gap-6 py-10 text-center sm:flex-row sm:text-left">
+    <div class="flex items-center gap-3">
+      <span class="flex h-9 w-9 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]">
+        <StarMark class="h-4 w-4 text-fg" />
+      </span>
+      <div>
+        <p class="text-sm font-semibold">{SITE_NAME}</p>
+        <p class="text-xs text-fg-dim">{SITE_ROLE}</p>
+      </div>
+    </div>
+
+    <nav aria-label="Контакты в футере" class="flex items-center gap-6 text-sm">
+      {telegramStub ? (
+        <span class="text-fg-dim">Telegram — скоро</span>
+      ) : (
+        <a
+          href={TELEGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-fg-muted transition duration-200 hover:text-fg"
+        >
+          Telegram
+          <span class="sr-only"> (откроется в новой вкладке)</span>
+        </a>
+      )}
+      {vkStub ? (
+        <span class="text-fg-dim">VK — скоро</span>
+      ) : (
+        <a
+          href={VK_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-fg-muted transition duration-200 hover:text-fg"
+        >
+          VK
+          <span class="sr-only"> (откроется в новой вкладке)</span>
+        </a>
+      )}
+    </nav>
+
+    <p class="text-xs text-fg-dim">
+      © {year} {SITE_NAME}
+    </p>
+  </div>
+</footer>

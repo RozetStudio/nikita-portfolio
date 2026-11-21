@@ -1,0 +1,81 @@
+---
+import SectionHeading from "../ui/SectionHeading.astro";
+import { Globe, Send } from "@lucide/astro";
+import { TELEGRAM_URL, VK_URL, isPlaceholder } from "@/config/site";
+
+// Кнопки работают с заглушками: пока ссылки не заполнены в .env,
+// по клику показывается подсказка «Ссылка скоро появится».
+const telegramStub = isPlaceholder(TELEGRAM_URL);
+const vkStub = isPlaceholder(VK_URL);
+---
+
+<section
+  id="contact"
+  aria-labelledby="contact-title"
+  class="relative scroll-mt-24 py-20 sm:py-28 lg:py-32"
+>
+  <!-- мягкое свечение позади панели -->
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute left-1/2 top-1/2 h-[460px] w-[min(860px,90vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.05] blur-[120px]"
+  ></div>
+
+  <div class="container-page relative">
+    <div class="card relative overflow-hidden px-6 py-14 text-center sm:px-12 sm:py-16" data-reveal>
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"
+      ></div>
+
+      <SectionHeading
+        headingId="contact-title"
+        eyebrow="Контакты"
+        title="Есть проект?"
+        subtitle="Расскажите, что нужно сделать. Отвечу в течение дня и предложу решение."
+      />
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3" data-contact-actions>
+        {telegramStub ? (
+          <button type="button" data-stub class="btn btn-primary">
+            <Send class="h-4 w-4" />
+            Написать в Telegram
+          </button>
+        ) : (
+          <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            <Send class="h-4 w-4" />
+            Написать в Telegram
+            <span class="sr-only"> (откроется в новой вкладке)</span>
+          </a>
+        )}
+        {vkStub ? (
+          <button type="button" data-stub class="btn btn-outline">
+            <Globe class="h-4 w-4" />
+            Написать в VK
+          </button>
+        ) : (
+          <a href={VK_URL} target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+            <Globe class="h-4 w-4" />
+            Написать в VK
+            <span class="sr-only"> (откроется в новой вкладке)</span>
+          </a>
+        )}
+      </div>
+
+      <p data-contact-status aria-live="polite" class="mt-4 min-h-5 text-sm text-fg-dim"></p>
+
+      <p class="text-sm text-fg-dim">Можно без готового ТЗ — помогу сформулировать.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Заглушки ссылок: без навигации, только подсказка
+  const actions = document.querySelector("[data-contact-actions]");
+  const status = document.querySelector("[data-contact-status]");
+
+  actions?.querySelectorAll("[data-stub]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (status) status.textContent = "Ссылка скоро появится.";
+    });
+  });
+</script>

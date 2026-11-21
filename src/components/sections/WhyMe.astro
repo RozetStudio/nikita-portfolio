@@ -1,0 +1,180 @@
+---
+import SectionHeading from "../ui/SectionHeading.astro";
+import { Clock, CodeXml, Gauge, Layers, Monitor, ShieldCheck } from "@lucide/astro";
+
+// TODO: тексты преимуществ — заглушки, можно править
+---
+
+<section
+  id="why-me"
+  aria-labelledby="why-title"
+  class="relative scroll-mt-24 py-20 sm:py-28 lg:py-32"
+>
+  <div class="container-page">
+    <SectionHeading
+      headingId="why-title"
+      eyebrow="Почему я"
+      title="Спокойно и по делу"
+      subtitle="Без агентской надстройки, потерянных сообщений и сюрпризов в смете."
+    />
+
+    <div class="mt-12 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-2 xl:grid-cols-12">
+      <!-- Один подрядчик -->
+      <article
+        data-reveal
+        data-spotlight
+        class="spotlight-card group relative overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:border-line-strong md:col-span-2 xl:col-span-7"
+      >
+        <span class="flex h-13 w-13 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+          <Layers class="h-6 w-6 text-fg" />
+        </span>
+        <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em]">Один подрядчик</h3>
+        <p class="mt-2 max-w-[420px] text-sm leading-relaxed text-fg-muted">
+          Лендинг, бот, вёрстка и скрипты. Не нужно сводить нескольких исполнителей.
+        </p>
+        <!-- слоистые окна -->
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute bottom-0 right-6 hidden w-52 xl:block"
+        >
+          <div class="h-20 translate-y-6 rounded-tile border border-line bg-bg-deep/80"></div>
+          <div class="absolute inset-x-3 top-2 h-20 rounded-tile border border-line-strong bg-surface-2/90">
+            <div class="flex gap-1.5 p-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-white/30"></span>
+              <span class="h-1.5 w-1.5 rounded-full bg-white/20"></span>
+              <span class="h-1.5 w-1.5 rounded-full bg-white/15"></span>
+            </div>
+            <div class="mx-2 space-y-1.5">
+              <div class="h-1.5 w-3/5 rounded-full bg-white/20"></div>
+              <div class="h-1.5 w-2/5 rounded-full bg-white/10"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Сроки -->
+      <article
+        data-reveal
+        data-reveal-delay="80"
+        data-spotlight
+        class="spotlight-card group relative overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:border-line-strong md:col-span-1 xl:col-span-5"
+      >
+        <span class="flex h-13 w-13 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+          <Clock class="h-6 w-6 text-fg" />
+        </span>
+        <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em]">Сроки</h3>
+        <p class="mt-2 max-w-[360px] text-sm leading-relaxed text-fg-muted">
+          Фиксирую этапы и показываю прогресс. Без «уже почти».
+        </p>
+        <div aria-hidden="true" class="mt-7 flex items-center gap-2">
+          <span class="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-fg-dim">
+            <span class="h-2 w-2 rounded-full bg-fg"></span>
+            Заявка
+          </span>
+          <span class="h-px flex-1 bg-gradient-to-r from-white/40 via-white/15 to-white/5"></span>
+          <span class="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-fg-dim">
+            <span class="h-2 w-2 rounded-full border border-white/40"></span>
+            ТЗ
+          </span>
+          <span class="h-px flex-1 bg-gradient-to-r from-white/15 to-white/5"></span>
+          <span class="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-fg-dim">
+            <span class="h-2 w-2 rounded-full border border-white/20"></span>
+            Запуск
+          </span>
+        </div>
+      </article>
+
+      <!-- Чистый код -->
+      <article
+        data-reveal
+        data-spotlight
+        class="spotlight-card group relative overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:border-line-strong xl:col-span-4"
+      >
+        <span class="flex h-13 w-13 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+          <CodeXml class="h-6 w-6 text-fg" />
+        </span>
+        <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em]">Чистый код</h3>
+        <p class="mt-2 text-sm leading-relaxed text-fg-muted">
+          Понятная структура, минимум зависимостей, комментарии по делу.
+        </p>
+        <pre
+          aria-hidden="true"
+          class="mt-6 rounded-tile border border-line bg-black/50 p-3 font-mono text-[10px] leading-relaxed text-fg-dim transition duration-300 group-hover:border-line-strong"
+        ><code>src/
+├─ pages/
+├─ components/
+└─ styles/</code></pre>
+      </article>
+
+      <!-- Адаптивность -->
+      <article
+        data-reveal
+        data-reveal-delay="80"
+        data-spotlight
+        class="spotlight-card group relative overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:border-line-strong xl:col-span-4"
+      >
+        <span class="flex h-13 w-13 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+          <Monitor class="h-6 w-6 text-fg" />
+        </span>
+        <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em]">Адаптивность</h3>
+        <p class="mt-2 text-sm leading-relaxed text-fg-muted">
+          Проверяю от 320 px до широких мониторов.
+        </p>
+        <div aria-hidden="true" class="mt-7 flex items-end gap-3">
+          <span class="h-14 w-8 rounded-md border border-white/25 bg-white/[0.04]"></span>
+          <span class="h-20 w-12 rounded-md border border-white/15 bg-white/[0.02]"></span>
+          <span class="h-24 flex-1 rounded-md border border-dashed border-white/15"></span>
+        </div>
+      </article>
+
+      <!-- Скорость -->
+      <article
+        data-reveal
+        data-reveal-delay="160"
+        data-spotlight
+        class="spotlight-card group relative overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:border-line-strong xl:col-span-4"
+      >
+        <span class="flex h-13 w-13 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+          <Gauge class="h-6 w-6 text-fg" />
+        </span>
+        <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em]">Скорость</h3>
+        <p class="mt-2 text-sm leading-relaxed text-fg-muted">
+          Лёгкая сборка, WebP/AVIF и быстрый первый экран.
+        </p>
+        <div aria-hidden="true" class="mt-7 space-y-2.5">
+          <div class="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+            <div class="h-full w-[92%] rounded-full bg-white/50"></div>
+          </div>
+          <div class="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+            <div class="h-full w-[78%] rounded-full bg-white/30"></div>
+          </div>
+          <div class="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+            <div class="h-full w-[64%] rounded-full bg-white/20"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Поддержка: широкая карточка -->
+      <article
+        data-reveal
+        data-spotlight
+        class="spotlight-card group relative overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:border-line-strong md:col-span-2 xl:col-span-12"
+      >
+        <div class="flex flex-col items-start gap-6 xl:flex-row xl:items-center xl:justify-between">
+          <div class="max-w-[560px]">
+            <span class="flex h-13 w-13 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+              <ShieldCheck class="h-6 w-6 text-fg" />
+            </span>
+            <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em]">Поддержка</h3>
+            <p class="mt-2 text-sm leading-relaxed text-fg-muted">
+              Остаюсь на связи после сдачи: правки, консультации и мелкие доработки.
+            </p>
+          </div>
+          <a href="#contact" class="btn btn-outline btn-sm shrink-0">
+            Обсудить поддержку
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
