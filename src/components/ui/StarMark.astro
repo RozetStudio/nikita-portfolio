@@ -1,0 +1,22 @@
+---
+interface Props {
+  class?: string;
+}
+
+// Фирменный знак: четырёхлучевая звезда. Тот же путь используется в favicon.svg.
+const { class: className } = Astro.props;
+---
+
+<svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true" class={className}>
+  <path
+    d="M32 4
+       C33.3 18 37.6 25.2 43.6 28.5
+       C49.6 31.8 56.3 32 62 32
+       C56.3 32 49.6 32.2 43.6 35.5
+       C37.6 38.8 33.3 46 32 60
+       C30.7 46 26.4 38.8 20.4 35.5
+       C14.4 32.2 7.7 32 2 32
+       C7.7 32 14.4 31.8 20.4 28.5
+       C26.4 25.2 30.7 18 32 4 Z"
+  ></path>
+</svg>

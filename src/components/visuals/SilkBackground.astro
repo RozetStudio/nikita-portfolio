@@ -1,0 +1,13 @@
+---
+// Живой фон hero: WebGL2 silk-шейдер поверх CSS-fallback.
+// При reduced motion / без WebGL canvas удаляется — остаётся градиент.
+---
+
+<div class="hero-fallback absolute inset-0" aria-hidden="true"></div>
+<canvas data-silk class="absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
+
+<script>
+  import { initSilk } from "../../scripts/silk";
+
+  initSilk();
+</script>

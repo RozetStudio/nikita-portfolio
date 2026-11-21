@@ -1,0 +1,110 @@
+---
+import "../styles/global.css";
+import { SITE_NAME, SITE_URL, TELEGRAM_URL, VK_URL } from "@/config/site";
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+
+// Canonical и OG-ссылки генерируются только при заданном PUBLIC_SITE_URL
+const siteUrl = SITE_URL || undefined;
+const canonical = siteUrl ? new URL(Astro.url.pathname, siteUrl).href : undefined;
+const ogImage = siteUrl ? new URL("/og.png", siteUrl).href : undefined;
+
+// TODO: тексты ниже можно править — они выведены в конфиг компонентов
+const services = ["Лендинги", "Telegram-боты", "Вёрстка сайтов", "Скрипты и автоматизация"];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      name: SITE_NAME,
+      jobTitle: "Фриланс-разработчик",
+      description,
+      knowsAbout: services,
+      ...(siteUrl ? { url: siteUrl } : {}),
+      sameAs: [TELEGRAM_URL, VK_URL].filter((url) => url !== ""),
+    },
+    {
+      "@type": "ProfessionalService",
+      name: SITE_NAME,
+      description,
+      serviceType: services,
+      ...(siteUrl ? { url: siteUrl } : {}),
+      ...(siteUrl ? { image: ogImage } : {}),
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="ru" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#070707" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/manrope-cyrillic-wght-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/manrope-latin-wght-normal.woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="ru_RU" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta property="og:image:width" content="1200" />}
+    {ogImage && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="min-h-dvh overflow-x-clip bg-bg font-sans text-fg">
+    <a href="#main" class="skip-link">
+      Перейти к содержанию
+    </a>
+    <slot />
+    <!-- Плёночное зерно поверх всего (декоративное) -->
+    <div
+      aria-hidden="true"
+      class="grain pointer-events-none fixed inset-0 z-[70] opacity-[0.03]"
+    ></div>
+    <script>
+      import { initSmoothScroll } from "@/scripts/smooth-scroll";
+      import { initReveal } from "@/scripts/reveal";
+      import { initSpotlight } from "@/scripts/spotlight";
+
+      initSmoothScroll();
+      initReveal();
+      initSpotlight();
+    </script>
+  </body>
+</html>
