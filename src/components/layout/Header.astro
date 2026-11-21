@@ -4,32 +4,37 @@ import StarMark from "../ui/StarMark.astro";
 ---
 
 <header data-header class="fixed inset-x-0 top-0 z-50">
-  <div class="mx-auto flex h-[72px] w-full max-w-[1152px] items-center justify-between gap-6 px-5 sm:px-8">
+  <div
+    class="mx-auto flex h-[72px] w-full max-w-[1152px] items-center justify-between gap-6 px-5 sm:px-8"
+  >
     <a href="#top" class="flex items-center gap-2.5" aria-label="Никита — на главную">
-      <span class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]">
+      <span
+        class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]"
+      >
         <StarMark class="h-4 w-4 text-fg" />
       </span>
       <span class="text-[15px] font-semibold tracking-tight">{SITE_NAME}</span>
     </a>
 
     <nav aria-label="Основная навигация" class="hidden items-center gap-8 md:flex">
-      {NAV_LINKS.map((link) => (
-        <a
-          data-nav
-          href={link.href}
-          class="text-sm text-fg-muted transition duration-200 hover:text-fg aria-[current=true]:text-fg"
-        >
-          {link.label}
-        </a>
-      ))}
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            data-nav
+            href={link.href}
+            class="text-sm text-fg-muted transition duration-200 hover:text-fg aria-[current=true]:text-fg"
+          >
+            {link.label}
+          </a>
+        ))
+      }
     </nav>
 
     <div class="hidden md:block">
-      <a href="#contact" class="btn btn-primary btn-sm">
-        Связаться
-      </a>
+      <a href="#contact" class="btn btn-primary btn-sm">Связаться</a>
     </div>
 
+    <!-- Бургер: две линии, морфятся в крестик при открытии меню -->
     <button
       type="button"
       data-menu-open
@@ -38,17 +43,8 @@ import StarMark from "../ui/StarMark.astro";
       aria-label="Открыть меню"
       class="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/[0.03] text-fg transition hover:border-line-strong md:hidden"
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.8"
-        stroke-linecap="round"
-        class="h-5 w-5"
-        aria-hidden="true"
-      >
-        <path d="M4 7h16M4 12h16M4 17h10"></path>
-      </svg>
+      <span aria-hidden="true" class="burger-line"></span>
+      <span aria-hidden="true" class="burger-line"></span>
     </button>
   </div>
 </header>
@@ -60,10 +56,12 @@ import StarMark from "../ui/StarMark.astro";
   aria-label="Меню"
   class="m-0 h-dvh max-h-none w-full max-w-full border-0 bg-bg p-0"
 >
-  <div class="flex h-full flex-col">
+  <div class="flex h-full flex-col" data-menu-panel>
     <div class="flex h-[72px] items-center justify-between border-b border-line px-5 sm:px-8">
       <span class="flex items-center gap-2.5">
-        <span class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]">
+        <span
+          class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]"
+        >
           <StarMark class="h-4 w-4 text-fg" />
         </span>
         <span class="text-[15px] font-semibold tracking-tight">{SITE_NAME}</span>
@@ -91,19 +89,20 @@ import StarMark from "../ui/StarMark.astro";
       aria-label="Мобильная навигация"
       class="flex flex-1 flex-col items-start justify-center gap-2 px-5"
     >
-      {NAV_LINKS.map((link) => (
-        <a
-          href={link.href}
-          class="w-full rounded-2xl px-4 py-4 text-2xl font-semibold tracking-[-0.02em] text-fg-muted transition hover:bg-white/[0.04] hover:text-fg"
-        >
-          {link.label}
-        </a>
-      ))}
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            data-menu-item
+            class="w-full rounded-2xl px-4 py-4 text-2xl font-semibold tracking-[-0.02em] text-fg-muted transition hover:bg-white/[0.04] hover:text-fg"
+          >
+            {link.label}
+          </a>
+        ))
+      }
     </nav>
-    <div class="px-5 pb-10">
-      <a href="#contact" class="btn btn-primary w-full">
-        Связаться
-      </a>
+    <div class="px-5 pb-10" data-menu-item>
+      <a href="#contact" class="btn btn-primary w-full">Связаться</a>
     </div>
   </div>
 </dialog>
@@ -126,11 +125,75 @@ import StarMark from "../ui/StarMark.astro";
   dialog[data-mobile-menu] {
     border: none;
     outline: none;
+    /* Плавное появление/исчезновение меню */
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.32s var(--ease-out-expo),
+      transform 0.32s var(--ease-out-expo);
+    pointer-events: none;
+  }
+  dialog[data-mobile-menu].is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
   dialog[data-mobile-menu]::backdrop {
     background: rgba(3, 3, 3, 0.7);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
+  }
+
+  /* Каскадное появление пунктов */
+  [data-menu-item] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo);
+  }
+  dialog[data-mobile-menu].is-open [data-menu-item] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  dialog[data-mobile-menu].is-open nav a:nth-child(1) {
+    transition-delay: 0.06s;
+  }
+  dialog[data-mobile-menu].is-open nav a:nth-child(2) {
+    transition-delay: 0.12s;
+  }
+  dialog[data-mobile-menu].is-open nav a:nth-child(3) {
+    transition-delay: 0.18s;
+  }
+  dialog[data-mobile-menu].is-open [data-menu-item]:last-of-type {
+    transition-delay: 0.22s;
+  }
+
+  /* Бургер-морф */
+  [data-menu-open] .burger-line {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition:
+      top 0.3s var(--ease-out-expo),
+      transform 0.3s var(--ease-out-expo);
+  }
+  [data-menu-open] .burger-line:first-child {
+    top: 15px;
+  }
+  [data-menu-open] .burger-line:last-child {
+    top: 23px;
+  }
+  [data-menu-open][aria-expanded="true"] .burger-line:first-child {
+    top: 19px;
+    transform: rotate(45deg);
+  }
+  [data-menu-open][aria-expanded="true"] .burger-line:last-child {
+    top: 19px;
+    transform: rotate(-45deg);
   }
 </style>
 
@@ -138,8 +201,4 @@ import StarMark from "../ui/StarMark.astro";
   import { initHeader } from "@/scripts/header";
 
   initHeader();
-
-  // Кнопка закрытия внутри диалога
-  const dialog = document.querySelector<HTMLDialogElement>("[data-mobile-menu]");
-  dialog?.querySelector("[data-menu-close]")?.addEventListener("click", () => dialog.close());
 </script>
