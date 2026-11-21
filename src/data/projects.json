@@ -1,0 +1,15 @@
+[
+  {
+    "id": "landing-coffee-shop",
+    "title": "Кофейня «Зерно»",
+    "category": "landing",
+    "client": "Кофейня",
+    "description": "Лендинг для локальной кофейни: меню, атмосфера и заявка на бронь столика.",
+    "stack": ["Astro", "Tailwind CSS", "TypeScript"],
+    "cover": "/portfolio/landing-coffee-shop.webp",
+    "link": "",
+    "date": "2026-03",
+    "featured": false,
+    "example": true
+  }
+]
