@@ -1,0 +1,70 @@
+---
+// Бесконечная монохромная лента технологий.
+// Дублированный список aria-hidden — для seam-less прокрутки.
+import {
+  siAstro,
+  siDocker,
+  siFigma,
+  siNodedotjs,
+  siPostgresql,
+  siPython,
+  siReact,
+  siTailwindcss,
+  siTelegram,
+  siTypescript,
+} from "simple-icons";
+
+const items = [
+  { name: "React", icon: siReact },
+  { name: "Astro", icon: siAstro },
+  { name: "TypeScript", icon: siTypescript },
+  { name: "Tailwind CSS", icon: siTailwindcss },
+  { name: "Python", icon: siPython },
+  { name: "Node.js", icon: siNodedotjs },
+  { name: "Telegram Bot API", icon: siTelegram },
+  { name: "PostgreSQL", icon: siPostgresql },
+  { name: "Docker", icon: siDocker },
+  { name: "Figma", icon: siFigma },
+];
+---
+
+<section aria-label="Технологии" class="marquee-mask relative overflow-hidden py-2">
+  <div data-marquee class="marquee-track flex w-max animate-marquee items-center gap-10 sm:gap-14">
+    <ul class="flex items-center gap-10 sm:gap-14">
+      {items.map((item) => (
+        <li class="flex items-center gap-2.5 text-fg-muted transition duration-200 hover:text-fg">
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            class="h-5 w-5 shrink-0 opacity-70"
+          >
+            <path d={item.icon.path} />
+          </svg>
+          <span class="whitespace-nowrap text-sm font-medium">{item.name}</span>
+        </li>
+      ))}
+    </ul>
+    <ul class="flex items-center gap-10 sm:gap-14" aria-hidden="true">
+      {items.map((item) => (
+        <li class="flex items-center gap-2.5 text-fg-muted">
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            class="h-5 w-5 shrink-0 opacity-70"
+          >
+            <path d={item.icon.path} />
+          </svg>
+          <span class="whitespace-nowrap text-sm font-medium">{item.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+</style>
