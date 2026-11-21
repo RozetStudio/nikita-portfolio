@@ -85,6 +85,23 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>
       document.documentElement.classList.add("js");
+      // Шрифты: главный триггер дёрганности первого прогона — подмена
+      // метрик текста. Анимации стартуют после загрузки шрифтов.
+      (function () {
+        let done = false;
+        const mark = function () {
+          if (done) return;
+          done = true;
+          document.documentElement.classList.add("fonts-loaded");
+          document.dispatchEvent(new CustomEvent("site:fonts"));
+        };
+        if (document.fonts && document.fonts.status !== "loaded") {
+          document.fonts.ready.then(mark);
+          setTimeout(mark, 1200);
+        } else {
+          mark();
+        }
+      })();
     </script>
   </head>
   <body class="min-h-dvh overflow-x-clip bg-bg font-sans text-fg">

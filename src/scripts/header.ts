@@ -64,7 +64,7 @@ export function initHeader(): void {
 
     const panel = dialog.querySelector<HTMLElement>("[data-menu-panel]");
     const onEnd = (event: TransitionEvent) => {
-      if (event.target === panel && event.propertyName === "opacity") {
+      if (panel && event.target === panel && event.propertyName === "opacity") {
         panel.removeEventListener("transitionend", onEnd);
         finish();
       }

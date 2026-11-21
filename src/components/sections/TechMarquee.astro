@@ -29,7 +29,7 @@ const items = [
 ---
 
 <section aria-label="Технологии" class="marquee-mask relative overflow-hidden py-2">
-  <div data-marquee class="marquee-track flex w-max animate-marquee items-center gap-10 sm:gap-14">
+  <div data-marquee class="marquee-track flex w-max items-center gap-10 sm:gap-14">
     <ul class="flex items-center gap-10 sm:gap-14">
       {items.map((item) => (
         <li class="flex items-center gap-2.5 text-fg-muted transition duration-200 hover:text-fg">
@@ -63,10 +63,15 @@ const items = [
   </div>
 </section>
 
-<style>
+<style is:global>
   /* Лента играет постоянно: наведение и клики её не останавливают.
-     will-change выносит анимацию на композитор. */
+     will-change выносит анимацию на композитор.
+     Старт — после загрузки шрифтов: подмена метрик текста меняет ширину
+     трека и рвёт первый прогон. */
   .marquee-track {
     will-change: transform;
+  }
+  html.fonts-loaded .marquee-track {
+    animation: marquee 40s linear infinite;
   }
 </style>

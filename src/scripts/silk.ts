@@ -196,10 +196,7 @@ export function initSilk(): void {
     pointerX += (targetX - pointerX) * 0.06;
     pointerY += (targetY - pointerY) * 0.06;
 
-    gl.uniform2f(uResolution, width, height);
-    gl.uniform1f(uTime, time);
-    gl.uniform2f(uPointer, pointerX, pointerY);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    draw();
   };
 
   const start = () => {
@@ -239,5 +236,31 @@ export function initSilk(): void {
     }
   });
 
-  start();
+  // Плавное проявление canvas поверх CSS-fallback с первого кадра
+  let firstDrawn = false;
+  const draw = () => {
+    gl.uniform2f(uResolution, width, height);
+    gl.uniform1f(uTime, time);
+    gl.uniform2f(uPointer, pointerX, pointerY);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (!firstDrawn) {
+      firstDrawn = true;
+      canvas.style.opacity = "1";
+    }
+  };
+
+  // Компиляция шейдерной программы асинхронно: не блокируем поток
+  const parallel = gl.getExtension("KHR_parallel_shader_compile") as
+    | { COMPLETION_STATUS_KHR: number }
+    | null;
+  const begin = () => start();
+  if (parallel) {
+    const poll = () => {
+      if (gl.getProgramParameter(program, parallel.COMPLETION_STATUS_KHR)) begin();
+      else window.setTimeout(poll, 40);
+    };
+    poll();
+  } else {
+    begin();
+  }
 }

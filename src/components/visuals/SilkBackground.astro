@@ -1,13 +1,17 @@
 ---
 // Живой фон hero: WebGL2 silk-шейдер поверх CSS-fallback.
-// При reduced motion / без WebGL canvas удаляется — остаётся градиент.
+// Инициализация НЕ здесь: Hero.astro стартует initSilk() после
+// entrance-анимаций (см. комментарий там) — иначе компиляция шейдера
+// рвёт первый прогон анимаций.
 ---
 
 <div class="hero-fallback absolute inset-0" aria-hidden="true"></div>
 <canvas data-silk class="absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
 
-<script>
-  import { initSilk } from "../../scripts/silk";
-
-  initSilk();
-</script>
+<style>
+  /* Canvas проявляется после инициализации, fallback под ним */
+  canvas[data-silk] {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+</style>
