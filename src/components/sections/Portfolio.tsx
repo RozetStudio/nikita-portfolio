@@ -24,7 +24,7 @@ export default function Portfolio() {
     <section
       id="portfolio"
       aria-labelledby="portfolio-title"
-      className="relative scroll-mt-24 py-20 sm:py-28 lg:py-32"
+      className="relative py-20 sm:py-28 lg:py-32"
     >
       {/* мягкое свечение позади секции */}
       <div
