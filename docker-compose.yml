@@ -1,3 +1,5 @@
+name: nikita-portfolio
+
 services:
   web:
     build:

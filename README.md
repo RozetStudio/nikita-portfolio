@@ -38,6 +38,7 @@ docker compose -f docker-compose.dev.yml up
 
 - Прод-контейнер отдаёт статику через nginx: gzip, долгий кэш `/_astro/`, security-заголовки, CSP, страница 404.
 - Dev-контейнер монтирует исходники (`CHOKIDAR_USEPOLLING=true` для Windows), зависимости живут в named volume `node_modules`.
+- Продакшн и разработка могут работать одновременно (отдельные compose-проекты, порты 8080 и 4321).
 
 ## Переменные окружения
 
