@@ -102,6 +102,12 @@ const jsonLd = {
           mark();
         }
       })();
+      // Страховка: если reveal-модуль не загрузился — показать всё
+      setTimeout(function () {
+        if (!document.documentElement.classList.contains("reveal-done")) {
+          document.documentElement.classList.add("no-reveal");
+        }
+      }, 3000);
     </script>
   </head>
   <body class="min-h-dvh overflow-x-clip bg-bg font-sans text-fg">

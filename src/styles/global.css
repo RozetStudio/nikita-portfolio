@@ -119,6 +119,16 @@
     scroll-padding-top: 72px;
   }
 
+  /* Reveal: элементы скрыты из CSS (а не прячутся JS-ом в момент старта
+     анимации — иначе при скролле виден «скачок» видно→скрыто→появилось).
+     Если reveal-модуль не загрузился — класс no-reveal всё покажет. */
+  html.js [data-reveal] {
+    opacity: 0;
+  }
+  html.js.no-reveal [data-reveal] {
+    opacity: 1;
+  }
+
   body {
     @apply bg-bg font-sans text-fg antialiased;
   }
@@ -287,5 +297,8 @@ html.lenis body {
   }
   .spotlight-card::before {
     opacity: 0 !important;
+  }
+  html.js [data-reveal] {
+    opacity: 1;
   }
 }

@@ -142,60 +142,16 @@ import StarMark from "../ui/StarMark.astro";
   </div>
 </section>
 
-<style is:global>
-  /* Скрываем hero-контент до reveal только при включённом JS;
-     если скрипт не загрузился — сработает страховка ниже.
-     will-change держит анимацию на композиторе без рывков. */
-  html.js [data-hero] [data-reveal] {
-    opacity: 0;
-    will-change: opacity, transform;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    html.js [data-hero] [data-reveal] {
-      opacity: 1;
-    }
-  }
-</style>
-
 <script>
   import { initHeroParallax } from "../../scripts/hero-parallax";
   import { initSilk } from "../../scripts/silk";
 
   initHeroParallax();
 
-  // Шейдер стартует ПОСЛЕ entrance-анимаций и загрузки шрифтов:
-  // компиляция программы WebGL блокирует поток и рвёт первый прогон.
-  const startSilk = () => {
-    const w = window as unknown as {
-      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void;
-    };
-    const idle = () => {
-      if (typeof w.requestIdleCallback === "function") {
-        w.requestIdleCallback(() => initSilk(), { timeout: 1500 });
-      } else {
-        window.setTimeout(initSilk, 200);
-      }
-    };
-    if (document.documentElement.classList.contains("fonts-loaded")) {
-      idle();
-    } else {
-      document.addEventListener("site:fonts", idle, { once: true });
-    }
-  };
-
-  // Отсечка по времени: шейдер не раньше 1100мс после старта reveal —
-  // entrance-анимации (~1с) должны доиграть без блокировки потока
-  const beginSilk = () => {
-    const revealAt = Number(document.documentElement.dataset.revealAt ?? 0);
-    const delay = Math.max(0, revealAt + 1100 - performance.now());
-    window.setTimeout(startSilk, delay);
-  };
-
-  if (document.documentElement.classList.contains("reveal-done")) {
-    beginSilk();
-  } else {
-    document.addEventListener("site:revealed", beginSilk, { once: true });
-  }
+  // Шейдер стартует сразу; компиляция программы асинхронная
+  // (KHR_parallel_shader_compile) и поток не блокирует, поэтому
+  // entrance-анимации идут без рывков.
+  initSilk();
 
   // Страховка: если reveal-модуль не отработал, показываем hero
   window.setTimeout(() => {

@@ -2,11 +2,14 @@ import { animate, inView } from "motion";
 
 /**
  * Reveal-анимации секций: элементы с [data-reveal] плавно появляются.
- * — Элементы первого экрана анимируются сразу (без IO).
- * — Остальные — через Motion inView при скролле.
+ * — Элементы скрыты через CSS (html.js [data-reveal] { opacity: 0 }),
+ *   поэтому при скролле нет «скачка»: видно→скрыто→появилось.
+ * — Элементы первого экрана анимируются сразу (без IO), остальные —
+ *   через Motion inView.
  * — Старт только после загрузки шрифтов: подмена метрик текста в первом
- *   прогоне даёт рывок и «обрыв» анимации.
- * — Страховка: элементы, застрявшие в opacity 0, показываются через 4s.
+ *   прогоне даёт рывок.
+ * — will-change ставится на время анимации и снимается после.
+ * — Страховки: класс no-reveal (BaseLayout) и таймер 4s.
  */
 
 let started = false;
@@ -26,11 +29,15 @@ export function initReveal(): void {
       const show = (el: HTMLElement, delay: number) => {
         if (handled.has(el)) return;
         handled.add(el);
-        animate(
+        el.style.willChange = "opacity, transform";
+        const controls = animate(
           el,
           { opacity: [0, 1], y: [24, 0] },
           { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] },
         );
+        void controls.finished.then(() => {
+          el.style.willChange = "";
+        });
       };
 
       for (const el of elements) {
@@ -66,11 +73,8 @@ export function initReveal(): void {
       }, 4000);
     }
 
-    // Флаг для страховки в Hero + сигнал для отложенного старта шейдера
+    // Флаг для страховок (Hero, BaseLayout)
     document.documentElement.classList.add("reveal-done");
-    // Время старта анимаций: шейдер инициализируется только после их завершения
-    document.documentElement.dataset.revealAt = String(Math.round(performance.now()));
-    document.dispatchEvent(new CustomEvent("site:revealed"));
   };
 
   const fonts = (document as unknown as { fonts?: FontFaceSet }).fonts;
