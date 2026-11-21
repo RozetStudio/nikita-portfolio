@@ -1,0 +1,80 @@
+---
+import SectionHeading from "../ui/SectionHeading.astro";
+import LandingVisual from "../visuals/LandingVisual.astro";
+import BotVisual from "../visuals/BotVisual.astro";
+import LayoutVisual from "../visuals/LayoutVisual.astro";
+import ScriptVisual from "../visuals/ScriptVisual.astro";
+import { Bot, Braces, Frame, Rocket } from "@lucide/astro";
+
+// TODO: тексты услуг — заглушки, можно править
+const services = [
+  {
+    icon: Rocket,
+    title: "Лендинги",
+    description: "Продающие одностраничники под запуск продукта, услуги или экспертизы.",
+    meta: "Под ключ",
+    Visual: LandingVisual,
+  },
+  {
+    icon: Bot,
+    title: "Telegram-боты",
+    description: "Заявки, продажи, рассылки, автоматизация и оплата — с интеграцией в CRM.",
+    meta: "CRM и оплата",
+    Visual: BotVisual,
+  },
+  {
+    icon: Frame,
+    title: "Вёрстка",
+    description: "Точный перенос макета из Figma в адаптивный и быстрый код.",
+    meta: "Figma → код",
+    Visual: LayoutVisual,
+  },
+  {
+    icon: Braces,
+    title: "Скрипты",
+    description: "Парсинг, интеграция с API и небольшие утилиты под вашу задачу.",
+    meta: "Автоматизация",
+    Visual: ScriptVisual,
+  },
+];
+---
+
+<section
+  id="services"
+  aria-labelledby="services-title"
+  class="relative scroll-mt-24 py-20 sm:py-28 lg:py-32"
+>
+  <div class="container-page">
+    <SectionHeading
+      headingId="services-title"
+      eyebrow="Услуги"
+      title="Что я делаю"
+      subtitle="Четыре направления. Один исполнитель. От первого макета до запуска."
+    />
+
+    <ul class="mt-12 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-2 xl:grid-cols-4">
+      {services.map((service, index) => (
+        <li data-reveal data-reveal-delay={index * 70} class="h-full">
+          <article
+            data-spotlight
+            class="spotlight-card group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:-translate-y-1 hover:border-line-strong"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <span class="flex h-13 w-13 shrink-0 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+                <service.icon class="h-6 w-6 text-fg" />
+              </span>
+              <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-dim">
+                {service.meta}
+              </span>
+            </div>
+
+            <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em]">{service.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-fg-muted">{service.description}</p>
+
+            <service.Visual />
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

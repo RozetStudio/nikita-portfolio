@@ -1,0 +1,63 @@
+---
+import SectionHeading from "../ui/SectionHeading.astro";
+import { FileText, MessageSquare, Rocket } from "@lucide/astro";
+
+// TODO: тексты шагов — заглушки, можно править
+const steps = [
+  {
+    number: "01",
+    icon: MessageSquare,
+    title: "Заявка",
+    description: "Пишете мне и коротко описываете задачу. Если ТЗ нет — помогу собрать.",
+  },
+  {
+    number: "02",
+    icon: FileText,
+    title: "ТЗ и сроки",
+    description: "Согласуем объём, стоимость и дату запуска. Фиксирую план.",
+  },
+  {
+    number: "03",
+    icon: Rocket,
+    title: "Запуск и поддержка",
+    description: "Сдаю проект, помогаю с доменом и остаюсь на связи.",
+  },
+];
+---
+
+<section
+  id="process"
+  aria-labelledby="process-title"
+  class="relative scroll-mt-24 py-20 sm:py-28 lg:py-32"
+>
+  <div class="container-page">
+    <SectionHeading
+      headingId="process-title"
+      eyebrow="Процесс"
+      title="Как я работаю"
+      subtitle="Короткий путь от сообщения до запуска."
+    />
+
+    <ol class="mt-12 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-3">
+      {steps.map((step, index) => (
+        <li data-reveal data-reveal-delay={index * 80} class="h-full">
+          <article
+            data-spotlight
+            class="spotlight-card group relative flex h-full flex-col gap-5 rounded-card border border-line bg-surface p-7 shadow-card transition duration-300 ease-out-expo hover:-translate-y-1 hover:border-line-strong sm:flex-row md:flex-col lg:flex-row"
+          >
+            <span class="absolute right-6 top-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-dim">
+              {step.number}
+            </span>
+            <span class="flex h-13 w-13 shrink-0 items-center justify-center rounded-tile border border-line bg-white/[0.04] transition duration-300 group-hover:border-line-strong group-hover:bg-white/[0.08]">
+              <step.icon class="h-6 w-6 text-fg" />
+            </span>
+            <div class="min-w-0">
+              <h3 class="text-lg font-semibold tracking-[-0.02em]">{step.title}</h3>
+              <p class="mt-1.5 text-sm leading-relaxed text-fg-muted">{step.description}</p>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
