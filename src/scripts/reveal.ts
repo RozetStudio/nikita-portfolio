@@ -33,8 +33,7 @@ export function initReveal(): void {
       const showInstant = (el: HTMLElement) => {
         if (handled.has(el)) return;
         handled.add(el);
-        el.style.opacity = "1";
-        el.style.transform = "none";
+        el.classList.add("reveal-in");
       };
 
       /** Плавное появление. */
@@ -47,6 +46,21 @@ export function initReveal(): void {
           { opacity: [0, 1], y: [20, 0] },
           { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] },
         );
+        // Motion применяет эффект асинхронно (onKeyframesResolved). Пока
+        // эффект не применён, элемент остаётся скрытым (CSS opacity 0);
+        // класс вешаем ровно в момент его появления — иначе в Firefox
+        // виден скачок «видимая карточка → эффект ставит opacity 0».
+        let tries = 0;
+        const attachClass = () => {
+          if (el.classList.contains("reveal-in")) return;
+          if (el.getAnimations().length > 0 || tries > 90) {
+            el.classList.add("reveal-in");
+            return;
+          }
+          tries += 1;
+          requestAnimationFrame(attachClass);
+        };
+        attachClass();
         void controls.finished.then(() => {
           el.style.willChange = "";
         });
@@ -91,8 +105,7 @@ export function initReveal(): void {
             const rect = el.getBoundingClientRect();
             if (rect.top < window.innerHeight && rect.bottom > 0) {
               showInstant(el);
-            }
-          }
+            }}
         }
       }, 4000);
     }
