@@ -16,9 +16,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate": "node scripts/validate-projects.mjs",
-    "cover": "node scripts/prepare-cover.mjs",
-    "icons": "node scripts/make-icons.mjs"
+    "validate": "node scripts/validate-projects.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",
@@ -50,7 +48,6 @@
     "prettier": "^3.10.1",
     "prettier-plugin-astro": "^1.1.2",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "sharp": "^0.35.5",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.73.0"
   }

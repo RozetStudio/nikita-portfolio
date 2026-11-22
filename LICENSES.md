@@ -19,14 +19,13 @@
 
 ## Код и стили
 
-- Astro, React, Tailwind CSS, Motion, Lenis, Zod, sharp — MIT/Apache-2.0/OFL, стандартные open-source лицензии.
+- Astro, React, Tailwind CSS, Motion, Lenis, Zod — MIT/Apache-2.0/OFL, стандартные open-source лицензии.
 - Компоненты и паттерны (Spotlight Card, Infinite Marquee, Bento Grid, silk-шейдер hero) написаны под этот проект; идеи взяты из открытой витрины [21st.dev](https://21st.dev) (в т.ч. Silk shader / Silky Moving Background как визуальные референсы), код не скопирован 1:1.
 
 ## Изображения
 
-- `public/portfolio/landing-coffee-shop.webp` — демонстрационный макет, собранный кодом внутри проекта (`src/pages/demo-cover.astro`), скриншот без внешних ассетов.
-- `public/og.png` — сгенерирован из страницы `src/pages/og-preview.astro`.
-- `docs/reference/ref1.jpg` — скриншот-референс дизайна; в сборку сайта не входит и на странице не используется.
+- `public/portfolio/landing-coffee-shop.webp` — демонстрационный макет, собранный кодом в процессе разработки, скриншот без внешних ассетов.
+- `public/og.png` — сгенерирован из служебной страницы проекта.
 
 ## Не входит в репозиторий
 

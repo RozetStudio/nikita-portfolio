@@ -14,10 +14,9 @@ dist
 .env.*
 !.env.example
 
-# Dev-инструменты и документация (в образ не нужны)
+# Dev-инструменты (в образ не нужны)
 .agents
 skills-lock.json
-docs
 *.md
 *.log
 .eslintcache
