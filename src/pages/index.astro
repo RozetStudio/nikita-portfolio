@@ -8,6 +8,7 @@ import Portfolio from "../components/sections/Portfolio";
 import WhyMe from "../components/sections/WhyMe.astro";
 import Contact from "../components/sections/Contact.astro";
 import Footer from "../components/layout/Footer.astro";
+import StarMark from "../components/ui/StarMark.astro";
 
 // TODO: описание для SEO и Open Graph — можно править
 const description =
@@ -20,7 +21,34 @@ const description =
     <Hero />
     <Services />
     <Process />
-    <Portfolio client:visible />
+    <section id="portfolio" aria-labelledby="portfolio-title" class="relative py-20 sm:py-28 lg:py-32">
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute left-1/2 top-24 h-[380px] w-[720px] max-w-full -translate-x-1/2 rounded-full bg-white/[0.04] blur-[120px]"
+      >
+      </div>
+      <div class="container-page relative">
+        <!-- Заголовок секции в Astro: React-остров не управляет reveal-узлами -->
+        <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+          <span class="section-badge">
+            <StarMark class="h-3 w-3 text-white/80" />
+            Портфолио
+          </span>
+          <h2
+            id="portfolio-title"
+            class="max-w-[760px] text-[clamp(2rem,4.6vw,4rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-balance"
+          >
+            Работы
+          </h2>
+          <p class="max-w-[620px] text-[15px] leading-relaxed text-fg-muted sm:text-base">
+            Лендинги, боты, вёрстка и автоматизация — от идеи до запуска.
+          </p>
+        </div>
+        <div class="contents">
+          <Portfolio client:visible />
+        </div>
+      </div>
+    </section>
     <WhyMe />
     <Contact />
   </main>

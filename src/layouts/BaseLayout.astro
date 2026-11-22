@@ -85,23 +85,13 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>
       document.documentElement.classList.add("js");
-      // Прячем reveal-цели синхронно, до первой отрисовки body.
-      // В dev CSS приходит через Vite после парсинга — без этого
-      // карточки успевают отрисоваться, спрятаться и проявиться заново.
-      (function () {
-        const style = document.createElement("style");
-        style.textContent = "html.js [data-reveal]{opacity:0}";
-        (document.head || document.documentElement).appendChild(style);
-      })();
-      // Шрифты: главный триггер дёрганности первого прогона — подмена
-      // метрик текста. Анимации стартуют после загрузки шрифтов.
+      // Шрифты: класс нужен marquee — лента стартует после загрузки шрифтов
       (function () {
         let done = false;
         const mark = function () {
           if (done) return;
           done = true;
           document.documentElement.classList.add("fonts-loaded");
-          document.dispatchEvent(new CustomEvent("site:fonts"));
         };
         if (document.fonts && document.fonts.status !== "loaded") {
           document.fonts.ready.then(mark);
@@ -117,6 +107,34 @@ const jsonLd = {
         }
       }, 3000);
     </script>
+    <style is:inline>
+      /* Reveal: скрытие и показ через CSS-класс — детерминированно во всех
+         браузерах (нет асинхронного резолва кейфреймов и WAAPI-гонок).
+         Правила нелейерные: каскадные слои global.css их не перекрывают.
+         Reveal анимирует translate, ховер карточек — transform: свойства
+         независимы и не конфликтуют. */
+      html.js [data-reveal] {
+        opacity: 0;
+        translate: 0 20px;
+      }
+      html.js [data-reveal].reveal-in {
+        opacity: 1;
+        translate: 0 0;
+        transition:
+          opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          translate 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      html.js.no-reveal [data-reveal] {
+        opacity: 1;
+        translate: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html.js [data-reveal] {
+          opacity: 1;
+          translate: none;
+        }
+      }
+    </style>
   </head>
   <body class="min-h-dvh overflow-x-clip bg-bg font-sans text-fg">
     <a href="#main" class="skip-link">
