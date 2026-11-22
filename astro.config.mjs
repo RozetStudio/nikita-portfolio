@@ -11,7 +11,17 @@ export default defineConfig({
   // TODO: задать реальный домен в .env, чтобы включить canonical и sitemap
   ...(site ? { site } : {}),
   output: "static",
-  integrations: [react(), ...(site ? [sitemap()] : [])],
+  integrations: [
+    react(),
+    // Служебные noindex-страницы не попадают в sitemap
+    ...(site
+      ? [
+          sitemap({
+            filter: (page) => !/\/(og-preview|demo-cover)\/?$/.test(page),
+          }),
+        ]
+      : []),
+  ],
   vite: {
     plugins: [tailwindcss()],
     server: {

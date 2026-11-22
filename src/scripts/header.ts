@@ -33,6 +33,8 @@ export function initHeader(): void {
 
   let closing = false;
 
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   const setExpanded = (open: boolean) => {
     openButton.setAttribute("aria-expanded", String(open));
     openButton.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
@@ -42,6 +44,12 @@ export function initHeader(): void {
     if (dialog.open || closing) return;
     dialog.showModal();
     setExpanded(true);
+    // Lenis: не скроллить страницу за открытым меню
+    document.dispatchEvent(new CustomEvent("site:menu-open"));
+    if (prefersReducedMotion) {
+      dialog.classList.add("is-open");
+      return;
+    }
     // Двойной rAF: сначала применяем скрытое состояние, затем класс → transition
     requestAnimationFrame(() => {
       requestAnimationFrame(() => dialog.classList.add("is-open"));
@@ -50,8 +58,14 @@ export function initHeader(): void {
 
   const closeMenu = () => {
     if (closing || !dialog.open) return;
-    closing = true;
     setExpanded(false);
+    if (prefersReducedMotion) {
+      // transitionend при 0.01ms может не прийти — закрываем сразу
+      dialog.classList.remove("is-open");
+      dialog.close();
+      return;
+    }
+    closing = true;
     dialog.classList.remove("is-open");
 
     let finished = false;
@@ -93,6 +107,8 @@ export function initHeader(): void {
     dialog.classList.remove("is-open");
     closing = false;
     setExpanded(false);
+    // Lenis: возвращаем скролл страницы
+    document.dispatchEvent(new CustomEvent("site:menu-close"));
   });
 
   dialog.querySelectorAll("a").forEach((link) => {

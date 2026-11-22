@@ -16,6 +16,10 @@ export function initSmoothScroll(): void {
 
   const lenis = new Lenis({ autoRaf: true, lerp: 0.12, smoothWheel: true });
 
+  // Мобильное меню: блокируем скролл страницы, пока меню открыто
+  document.addEventListener("site:menu-open", () => lenis.stop());
+  document.addEventListener("site:menu-close", () => lenis.start());
+
   document.addEventListener("click", (event) => {
     const anchor = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
     if (!anchor) return;

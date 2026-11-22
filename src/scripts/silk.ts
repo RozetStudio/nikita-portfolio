@@ -159,6 +159,7 @@ export function initSilk(): void {
   let accumulated = 0;
   let time = 0;
   let visible = true;
+  let destroyed = false;
 
   // Адаптивное качество: если fps стабильно низкий — снижаем плотность один раз
   let perfWindow = 0;
@@ -200,7 +201,7 @@ export function initSilk(): void {
   };
 
   const start = () => {
-    if (running) return;
+    if (destroyed || running) return;
     running = true;
     last = performance.now();
     raf = requestAnimationFrame(frame);
@@ -225,12 +226,14 @@ export function initSilk(): void {
 
   canvas.addEventListener("webglcontextlost", (event) => {
     event.preventDefault();
+    destroyed = true;
     stop();
     canvas.remove();
   });
 
   reducedQuery.addEventListener?.("change", () => {
     if (reducedQuery.matches) {
+      destroyed = true;
       stop();
       canvas.remove();
     }

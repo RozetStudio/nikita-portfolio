@@ -153,12 +153,6 @@ import StarMark from "../ui/StarMark.astro";
   // entrance-анимации идут без рывков.
   initSilk();
 
-  // Страховка: если reveal-модуль не отработал, показываем hero
-  window.setTimeout(() => {
-    if (!document.documentElement.classList.contains("reveal-done")) {
-      document.querySelectorAll<HTMLElement>("[data-hero] [data-reveal]").forEach((el) => {
-        el.style.opacity = "1";
-      });
-    }
-  }, 2500);
+  // Страховка «показать hero» не нужна: глобальный no-reveal
+  // (BaseLayout) снимает и opacity, и translate.
 </script>
