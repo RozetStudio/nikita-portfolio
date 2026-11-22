@@ -85,6 +85,14 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>
       document.documentElement.classList.add("js");
+      // Прячем reveal-цели синхронно, до первой отрисовки body.
+      // В dev CSS приходит через Vite после парсинга — без этого
+      // карточки успевают отрисоваться, спрятаться и проявиться заново.
+      (function () {
+        const style = document.createElement("style");
+        style.textContent = "html.js [data-reveal]{opacity:0}";
+        (document.head || document.documentElement).appendChild(style);
+      })();
       // Шрифты: главный триггер дёрганности первого прогона — подмена
       // метрик текста. Анимации стартуют после загрузки шрифтов.
       (function () {
