@@ -8,6 +8,9 @@ import { animate, inView } from "motion";
  *   через Motion inView.
  * — Старт только после загрузки шрифтов: подмена метрик текста в первом
  *   прогоне даёт рывок.
+ * — Быстрая прокрутка: если колбэк сработал, когда элемент уже глубоко
+ *   в экране, показываем мгновенно — иначе контент «мерцает»
+ *   (прячется и медленно проявляется на глазах).
  * — will-change ставится на время анимации и снимается после.
  * — Страховки: класс no-reveal (BaseLayout) и таймер 4s.
  */
@@ -26,18 +29,41 @@ export function initReveal(): void {
     if (elements.length > 0) {
       const handled = new WeakSet<HTMLElement>();
 
-      const show = (el: HTMLElement, delay: number) => {
+      /** Мгновенный показ: без анимации (быстрый скролл/страховка). */
+      const showInstant = (el: HTMLElement) => {
+        if (handled.has(el)) return;
+        handled.add(el);
+        el.style.opacity = "1";
+        el.style.transform = "none";
+      };
+
+      /** Плавное появление. */
+      const showAnimated = (el: HTMLElement, delay: number) => {
         if (handled.has(el)) return;
         handled.add(el);
         el.style.willChange = "opacity, transform";
         const controls = animate(
           el,
-          { opacity: [0, 1], y: [24, 0] },
-          { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] },
+          { opacity: [0, 1], y: [20, 0] },
+          { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] },
         );
         void controls.finished.then(() => {
           el.style.willChange = "";
         });
+      };
+
+      /**
+       * Появление при скролле: если элемент уже глубоко в экране
+       * (колбэк сработал с запозданием на быстрой прокрутке) —
+       * мгновенно, иначе плавно.
+       */
+      const showOnScroll = (el: HTMLElement, delay: number) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.7) {
+          showInstant(el);
+          return;
+        }
+        showAnimated(el, delay);
       };
 
       for (const el of elements) {
@@ -46,12 +72,12 @@ export function initReveal(): void {
         const inFirstViewport = rect.top < window.innerHeight && rect.bottom > 0;
 
         if (inFirstViewport) {
-          requestAnimationFrame(() => show(el, delay));
+          requestAnimationFrame(() => showAnimated(el, delay));
         } else {
           inView(
             el,
-            () => show(el, delay),
-            { margin: "0px 0px -12% 0px", amount: 0.2 },
+            () => showOnScroll(el, delay),
+            { margin: "0px 0px -4% 0px", amount: 0.02 },
           );
         }
       }
@@ -64,9 +90,7 @@ export function initReveal(): void {
           if (Number(getComputedStyle(el).opacity) < 0.05) {
             const rect = el.getBoundingClientRect();
             if (rect.top < window.innerHeight && rect.bottom > 0) {
-              el.style.opacity = "1";
-              el.style.transform = "none";
-              handled.add(el);
+              showInstant(el);
             }
           }
         }
