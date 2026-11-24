@@ -22,5 +22,17 @@
     "link": "",
     "date": "2026-11",
     "featured": false
+  },
+  {
+    "id": "telegram-bot",
+    "title": "ForSellbot",
+    "category": "bot",
+    "client": "Telegram-бот",
+    "description": "Бот для продажи доступа в закрытый Telegram-канал: тарифы, оплата звёздами, одноразовые ссылки, напоминания и админ-панель.",
+    "stack": ["Python", "aiogram", "SQLAlchemy", "SQLite", "Telegram Stars", "Docker"],
+    "cover": "/portfolio/telegram-bot.webp",
+    "link": "",
+    "date": "2026-11",
+    "featured": false
   }
 ]
