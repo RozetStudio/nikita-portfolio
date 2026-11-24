@@ -1,15 +1,26 @@
 [
   {
-    "id": "landing-coffee-shop",
-    "title": "Кофейня «Зерно»",
+    "id": "banny-domik",
+    "title": "Банный домик",
     "category": "landing",
-    "client": "Кофейня",
-    "description": "Лендинг для локальной кофейни: меню, атмосфера и заявка на бронь столика.",
-    "stack": ["Astro", "Tailwind CSS", "TypeScript"],
-    "cover": "/portfolio/landing-coffee-shop.webp",
+    "client": "Частная баня",
+    "description": "Лендинг частной бани: большая и малая бани, парная на дровах, бассейн и купель, бронирование вечера и отзывы 4,9.",
+    "stack": ["HTML", "CSS", "JavaScript"],
+    "cover": "/portfolio/banny-domik.webp",
     "link": "",
-    "date": "2026-03",
-    "featured": false,
-    "example": true
+    "date": "2026-11",
+    "featured": false
+  },
+  {
+    "id": "xgame-club",
+    "title": "X-GAME",
+    "category": "landing",
+    "client": "Компьютерный клуб",
+    "description": "Лендинг компьютерного клуба: 29 игровых ПК, четыре зала, PS5 и Battle Pass, тарифы и бронь. Тёмная неоновая подача под атмосферу клуба.",
+    "stack": ["HTML", "CSS", "JavaScript"],
+    "cover": "/portfolio/xgame-club.webp",
+    "link": "",
+    "date": "2026-11",
+    "featured": false
   }
 ]
