@@ -82,7 +82,10 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
+    />
     <script is:inline>
       document.documentElement.classList.add("js");
       // Шрифты: класс нужен marquee — лента стартует после загрузки шрифтов

@@ -12,6 +12,26 @@ export default defineConfig({
   ...(site ? { site } : {}),
   output: "static",
   integrations: [react(), ...(site ? [sitemap()] : [])],
+  // CSP с автоматическими хэшами для инлайн-скриптов/стилей Astro.
+  // Мета-тег покрывает script-src/style-src; frame-ancestors остаётся в nginx.
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        "connect-src 'self'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+      ],
+      // Инлайн style-атрибуты (визуальные компоненты) — только для атрибутов,
+      // стилевые элементы получают хэши автоматически.
+      styleDirective: {
+        resources: ["'self'", { resource: "'unsafe-inline'", kind: "attribute" }],
+      },
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
     server: {
