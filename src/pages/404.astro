@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import StarMark from "../components/ui/StarMark.astro";
+import { BASE_PATH } from "@/config/site";
 ---
 
 <BaseLayout
@@ -29,10 +30,10 @@ import StarMark from "../components/ui/StarMark.astro";
         Возможно, ссылка устарела. Вернитесь на главную или напишите мне.
       </p>
       <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-        <a href="/" class="btn btn-primary">
+        <a href={BASE_PATH} class="btn btn-primary">
           На главную
         </a>
-        <a href="/#contact" class="btn btn-outline">
+        <a href={`${BASE_PATH}#contact`} class="btn btn-outline">
           Написать
         </a>
       </div>

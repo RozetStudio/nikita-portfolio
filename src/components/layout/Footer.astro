@@ -1,6 +1,6 @@
 ---
 import StarMark from "../ui/StarMark.astro";
-import { SITE_NAME, SITE_ROLE, TELEGRAM_URL, VK_URL, isPlaceholder } from "@/config/site";
+import { SITE_NAME, SITE_ROLE, TELEGRAM_URL, VK_URL, isPlaceholder, withBase } from "@/config/site";
 
 // TODO: ссылки Telegram/VK берутся из .env (TELEGRAM_URL, VK_URL)
 const telegramStub = isPlaceholder(TELEGRAM_URL);
@@ -54,7 +54,7 @@ const year = new Date().getFullYear();
         © {year} {SITE_NAME}
       </p>
       <a
-        href="/terms/"
+        href={withBase("terms/")}
         class="inline-flex min-h-6 items-center text-xs text-fg-dim underline-offset-4 transition duration-200 hover:text-fg-muted hover:underline"
       >
         Пользовательское соглашение

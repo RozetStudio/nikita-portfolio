@@ -2,6 +2,7 @@ import type { Project } from "@/types/project";
 import { CATEGORY_LABELS } from "@/lib/projects";
 import { formatDate } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
+import { withBase } from "@/config/site";
 
 /**
  * Единственная карточка работы. Принимает только объект проекта.
@@ -10,12 +11,13 @@ import { Badge } from "@/components/ui/badge";
  */
 export function ProjectCard({ project }: { project: Project }) {
   const href = project.link && project.link.trim() !== "" ? project.link : undefined;
+  const cover = /^https?:\/\//i.test(project.cover) ? project.cover : withBase(project.cover);
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-card transition duration-300 ease-out-expo hover:-translate-y-1 hover:border-line-strong">
       <div className="relative overflow-hidden border-b border-line">
         <img
-          src={project.cover}
+          src={cover}
           alt={`Превью проекта: ${project.title}`}
           width={1200}
           height={900}

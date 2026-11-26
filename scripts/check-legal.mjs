@@ -9,6 +9,9 @@ import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = process.cwd();
+const rawBase = (process.env.BASE_PATH ?? "/").trim();
+const basePath = rawBase === "/" ? "/" : `/${rawBase.replace(/^\/+|\/+$/g, "")}/`;
+const termsHref = `${basePath}terms/`;
 const errors = [];
 const fail = (message) => errors.push(message);
 
@@ -96,7 +99,9 @@ for (const [name, html] of [
   ["главная", home],
   ["соглашение", terms],
 ]) {
-  if (!html.includes('href="/terms/"')) fail(`на странице «${name}» нет ссылки на /terms/`);
+  if (!html.includes(`href="${termsHref}"`)) {
+    fail(`на странице «${name}» нет ссылки на ${termsHref}`);
+  }
   if (!html.includes("Пользовательское соглашение")) {
     fail(`на странице «${name}» нет текста ссылки «Пользовательское соглашение»`);
   }

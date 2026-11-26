@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { SITE_NAME, SITE_URL, TELEGRAM_URL, VK_URL } from "@/config/site";
+import { BASE_PATH, SITE_NAME, SITE_URL, TELEGRAM_URL, VK_URL, withBase } from "@/config/site";
 
 interface Props {
   title: string;
@@ -12,8 +12,12 @@ const { title, description, noindex = false } = Astro.props;
 
 // Canonical и OG-ссылки генерируются только при заданном PUBLIC_SITE_URL
 const siteUrl = SITE_URL || undefined;
-const canonical = siteUrl ? new URL(Astro.url.pathname, siteUrl).href : undefined;
-const ogImage = siteUrl ? new URL("/og.png", siteUrl).href : undefined;
+const siteRoot = siteUrl ? new URL(BASE_PATH, siteUrl).href : undefined;
+const pagePath = Astro.url.pathname.startsWith(BASE_PATH)
+  ? Astro.url.pathname
+  : withBase(Astro.url.pathname);
+const canonical = siteUrl ? new URL(pagePath, siteUrl).href : undefined;
+const ogImage = siteUrl ? new URL(withBase("og.png"), siteUrl).href : undefined;
 
 // TODO: тексты ниже можно править — они выведены в конфиг компонентов
 const services = ["Лендинги", "Telegram-боты", "Вёрстка сайтов", "Скрипты и автоматизация"];
@@ -27,7 +31,7 @@ const jsonLd = {
       jobTitle: "Фриланс-разработчик",
       description,
       knowsAbout: services,
-      ...(siteUrl ? { url: siteUrl } : {}),
+      ...(siteRoot ? { url: siteRoot } : {}),
       sameAs: [TELEGRAM_URL, VK_URL].filter((url) => url !== ""),
     },
     {
@@ -35,8 +39,8 @@ const jsonLd = {
       name: SITE_NAME,
       description,
       serviceType: services,
-      ...(siteUrl ? { url: siteUrl } : {}),
-      ...(siteUrl ? { image: ogImage } : {}),
+      ...(siteRoot ? { url: siteRoot } : {}),
+      ...(siteRoot ? { image: ogImage } : {}),
     },
   ],
 };
@@ -53,21 +57,21 @@ const jsonLd = {
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     {canonical && <link rel="canonical" href={canonical} />}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <link rel="apple-touch-icon" href={withBase("apple-touch-icon.png")} />
+    <link rel="manifest" href={withBase("site.webmanifest")} />
     <link
       rel="preload"
       as="font"
       type="font/woff2"
-      href="/fonts/manrope-cyrillic-wght-normal.woff2"
+      href={withBase("fonts/manrope-cyrillic-wght-normal.woff2")}
       crossorigin
     />
     <link
       rel="preload"
       as="font"
       type="font/woff2"
-      href="/fonts/manrope-latin-wght-normal.woff2"
+      href={withBase("fonts/manrope-latin-wght-normal.woff2")}
       crossorigin
     />
     <meta property="og:type" content="website" />
@@ -82,10 +86,7 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
-    />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />
     <script is:inline>
       document.documentElement.classList.add("js");
       // Шрифты: класс нужен marquee — лента стартует после загрузки шрифтов

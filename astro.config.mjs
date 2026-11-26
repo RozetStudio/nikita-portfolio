@@ -7,9 +7,15 @@ import { defineConfig } from "astro/config";
 // Без него canonical/OG-ссылки и sitemap не генерируются.
 const site = process.env.PUBLIC_SITE_URL?.trim() || undefined;
 
+// GitHub Pages проекта живёт в /<repo>/, локально — в /.
+// BASE_PATH задаётся в workflow; Astro отдаёт его через import.meta.env.BASE_URL.
+const rawBase = process.env.BASE_PATH?.trim() || "/";
+const base = rawBase === "/" ? "/" : `/${rawBase.replace(/^\/+|\/+$/g, "")}/`;
+
 export default defineConfig({
   // TODO: задать реальный домен в .env, чтобы включить canonical и sitemap
   ...(site ? { site } : {}),
+  base,
   output: "static",
   integrations: [react(), ...(site ? [sitemap()] : [])],
   // CSP с автоматическими хэшами для инлайн-скриптов/стилей Astro.
