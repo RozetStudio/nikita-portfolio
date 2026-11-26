@@ -48,6 +48,8 @@ export function initSmoothScroll(): void {
   document.addEventListener("click", (event) => {
     const anchor = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
     if (!anchor) return;
+    // Skip-link должен нативно перевести фокус в main, а не просто скроллить
+    if (anchor.classList.contains("skip-link")) return;
     const href = anchor.getAttribute("href");
     if (!href || href === "#") return;
     const target = document.querySelector<HTMLElement>(href);
@@ -56,7 +58,7 @@ export function initSmoothScroll(): void {
     event.preventDefault();
 
     const menu = document.querySelector<HTMLDialogElement>("dialog[data-mobile-menu]");
-    if (menu?.open) {
+    if (menu?.open || document.documentElement.classList.contains("menu-open")) {
       pendingHash = href;
       return;
     }

@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+@source "../**/*.{astro,ts,tsx}";
 
 /* =============================================================
    Шрифт: Manrope Variable (self-hosted, лицензия OFL-1.1, public/fonts/OFL.txt)

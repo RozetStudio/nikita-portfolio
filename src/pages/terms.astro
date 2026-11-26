@@ -38,7 +38,7 @@ const description =
 
 <BaseLayout title="Пользовательское соглашение — Никита" description={description}>
   <Header />
-  <main id="main" class="relative pb-20 pt-[104px] sm:pb-28 sm:pt-[128px]">
+  <main id="main" tabindex="-1" class="relative pb-20 pt-[104px] sm:pb-28 sm:pt-[128px]">
     <div
       aria-hidden="true"
       class="pointer-events-none absolute left-1/2 top-0 h-[380px] w-[720px] max-w-full -translate-x-1/2 rounded-full bg-white/[0.03] blur-[120px]"
@@ -49,14 +49,16 @@ const description =
         <a
           href="/"
           data-print-hide
-          class="inline-flex items-center gap-2 text-sm text-fg-dim transition duration-200 hover:text-fg-muted"
+          class="inline-flex min-h-6 items-center gap-2 text-sm text-fg-dim transition duration-200 hover:text-fg-muted"
         >
           <span aria-hidden="true">←</span>
           На главную
         </a>
 
-        <div class="mt-6 flex flex-col items-start gap-4 border-b border-line pb-8" data-print-hide>
-          <SectionBadge label="Документы" />
+        <div class="legal-intro mt-6 flex flex-col items-start gap-4 border-b border-line pb-8">
+          <div data-print-hide>
+            <SectionBadge label="Документы" />
+          </div>
           <h1
             id="legal-title"
             class="max-w-[860px] text-[clamp(2rem,4.6vw,4rem)] font-semibold leading-[1.05] tracking-[-0.03em] text-balance"
@@ -72,16 +74,18 @@ const description =
           </p>
         </div>
 
-        <div class="mt-10 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-14">
-          <aside class="lg:sticky lg:top-24 lg:self-start" data-print-hide>
+        <div class="legal-layout mt-10 grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-14">
+          <aside class="legal-toc lg:sticky lg:top-24 lg:self-start" data-print-hide>
             <details class="card p-4 lg:hidden">
-              <summary class="cursor-pointer text-sm font-semibold text-fg">Содержание</summary>
+              <summary class="flex min-h-6 cursor-pointer items-center text-sm font-semibold text-fg">
+                Содержание
+              </summary>
               <ol class="mt-4 space-y-2 text-sm">
                 {toc.map((item) => (
                   <li>
                     <a
                       href={`#${item.id}`}
-                      class="text-fg-muted transition duration-200 hover:text-fg"
+                      class="flex min-h-6 items-center text-fg-muted transition duration-200 hover:text-fg"
                     >
                       {item.title}
                     </a>
@@ -90,14 +94,17 @@ const description =
               </ol>
             </details>
 
-            <nav aria-label="Содержание документа" class="card hidden p-5 lg:block">
+            <nav
+              aria-label="Содержание документа"
+              class="card hidden p-5 lg:block lg:max-h-[calc(100dvh-8rem)] lg:overflow-y-auto"
+            >
               <p class="eyebrow">Содержание</p>
               <ol class="mt-4 space-y-2 text-sm">
                 {toc.map((item) => (
                   <li>
                     <a
                       href={`#${item.id}`}
-                      class="block text-fg-muted transition duration-200 hover:text-fg"
+                      class="flex min-h-6 items-center text-fg-muted transition duration-200 hover:text-fg"
                     >
                       {item.title}
                     </a>
@@ -107,7 +114,7 @@ const description =
             </nav>
           </aside>
 
-          <article class="min-w-0 space-y-10 text-[15px] leading-7 text-fg-muted print:text-black">
+          <article class="legal-article min-w-0 max-w-[760px] space-y-10 text-[15px] leading-7 text-fg-muted print:text-black">
             <section
               id="general"
               aria-labelledby="general-title"
@@ -755,7 +762,7 @@ const description =
                       href={TELEGRAM_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-fg underline decoration-line-strong underline-offset-4 transition hover:text-white"
+                      class="inline-flex min-h-6 items-center text-fg underline decoration-line-strong underline-offset-4 transition hover:text-white"
                     >
                       написать
                       <span class="sr-only"> (откроется в новой вкладке)</span>
@@ -771,7 +778,7 @@ const description =
                       href={VK_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="text-fg underline decoration-line-strong underline-offset-4 transition hover:text-white"
+                      class="inline-flex min-h-6 items-center text-fg underline decoration-line-strong underline-offset-4 transition hover:text-white"
                     >
                       написать
                       <span class="sr-only"> (откроется в новой вкладке)</span>
@@ -826,6 +833,39 @@ const description =
 </BaseLayout>
 
 <style>
+  @keyframes legal-in {
+    from {
+      opacity: 0;
+      translate: 0 16px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  .legal-intro {
+    animation: legal-in 0.7s var(--ease-out-expo) both;
+  }
+
+  .legal-toc {
+    animation: legal-in 0.7s var(--ease-out-expo) 0.08s both;
+  }
+
+  .legal-article {
+    animation: legal-in 0.7s var(--ease-out-expo) 0.16s both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .legal-intro,
+    .legal-toc,
+    .legal-article {
+      animation: none !important;
+      opacity: 1 !important;
+      translate: none !important;
+    }
+  }
+
   @media print {
     :global([data-header]),
     :global(footer),
@@ -843,14 +883,32 @@ const description =
       padding-top: 0 !important;
     }
 
+    :global(.legal-layout) {
+      display: block !important;
+    }
+
+    :global(.legal-article) {
+      width: auto !important;
+      max-width: none !important;
+    }
+
     :global(main h1),
     :global(main h2),
     :global(main p),
     :global(main li),
     :global(main td),
     :global(main th),
-    :global(main summary) {
+    :global(main summary),
+    :global(main strong),
+    :global(main caption) {
       color: #111 !important;
+    }
+
+    :global(main table),
+    :global(main table tr),
+    :global(main table th),
+    :global(main table td) {
+      border-color: #bbb !important;
     }
 
     :global(.card) {
@@ -862,6 +920,14 @@ const description =
     :global(a) {
       color: #111 !important;
       text-decoration: underline;
+    }
+
+    .legal-intro,
+    .legal-toc,
+    .legal-article {
+      animation: none !important;
+      opacity: 1 !important;
+      translate: none !important;
     }
   }
 </style>

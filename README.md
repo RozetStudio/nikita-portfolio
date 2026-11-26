@@ -8,17 +8,17 @@
 
 ## Стек
 
-| Слой | Технология |
-|---|---|
-| Каркас | Astro 7 (static output), TypeScript strict |
-| Интерактив | React 19-остров (фильтр портфолио), Motion 14 |
-| Стили | Tailwind CSS v4 (`@theme`-токены), кастомный silk-шейдер на WebGL2 |
-| UI | shadcn-паттерн (Badge), паттерны 21st.dev |
-| Скролл | Lenis (отключается при `prefers-reduced-motion`) |
-| Иконки | Lucide (`@lucide/astro`), Simple Icons (CC0) |
-| Шрифт | Manrope Variable (OFL-1.1, self-host) |
-| Валидация | Zod (схема `projects.json`) |
-| Контейнеры | Docker multi-stage → nginx, Compose prod/dev |
+| Слой       | Технология                                                         |
+| ---------- | ------------------------------------------------------------------ |
+| Каркас     | Astro 7 (static output), TypeScript strict                         |
+| Интерактив | React 19-остров (фильтр портфолио), Motion 14                      |
+| Стили      | Tailwind CSS v4 (`@theme`-токены), кастомный silk-шейдер на WebGL2 |
+| UI         | shadcn-паттерн (Badge), паттерны 21st.dev                          |
+| Скролл     | Lenis (отключается при `prefers-reduced-motion`)                   |
+| Иконки     | Lucide (`@lucide/astro`), Simple Icons (CC0)                       |
+| Шрифт      | Manrope Variable (OFL-1.1, self-host)                              |
+| Валидация  | Zod (схема `projects.json`)                                        |
+| Контейнеры | Docker multi-stage → nginx, Compose prod/dev                       |
 
 ## Быстрый старт
 
@@ -37,6 +37,8 @@ docker compose -f docker-compose.dev.yml up
 - Прод-контейнер отдаёт статику через nginx: gzip, долгий кэш `/_astro/`, security-заголовки, CSP, страница 404.
 - Dev-контейнер монтирует исходники (`CHOKIDAR_USEPOLLING=true` для Windows), зависимости живут в named volume `node_modules`.
 - Продакшн и разработка могут работать одновременно (отдельные compose-проекты, порты 8080 и 4321).
+- По умолчанию оба порта привязаны к `127.0.0.1` и недоступны из локальной сети. Для просмотра с телефона:
+  `BIND_HOST=0.0.0.0 docker compose up --build`. Dev-сервер по умолчанию не отдаёт `.env`, `.git`, `AGENTS.md` и `HISTORY.md`.
 
 ## Переменные окружения
 
@@ -51,6 +53,10 @@ PUBLIC_SITE_URL=
 # Примеры: https://t.me/username, https://vk.com/username
 TELEGRAM_URL=
 VK_URL=
+
+# Хост публикации docker-портов (compose, не Astro).
+# 127.0.0.1 — только этот компьютер; 0.0.0.0 — доступ из локальной сети.
+BIND_HOST=127.0.0.1
 ```
 
 Важно: сайт статический, значения читаются на этапе сборки. После изменения
@@ -65,7 +71,7 @@ VK_URL=
 1. превью `public/portfolio/<id>.webp` — WebP, соотношение 4:3, ширина ≤1200 px, имя файла = `id`;
 2. объект в конец массива строго с полями:
    `id` (slug латиницей), `title`, `category` (`landing`/`bot`/`layout`/`script`),
-   `client`, `description`, `stack`, `cover`, `link`, `date` (`YYYY-MM`), `featured`;
+   `client` (опционально), `description`, `stack`, `cover`, `link`, `date` (`YYYY-MM`), `featured`;
 3. `npm run validate` — проверит схему, уникальность `id` и наличие файла превью.
 
 Правила системы:
@@ -78,28 +84,32 @@ VK_URL=
 
 ## Скрипты
 
-| Команда | Что делает |
-|---|---|
-| `npm run dev` | dev-сервер Astro (локально, вне Docker) |
-| `npm run build` | валидация данных + сборка статики |
-| `npm run preview` | локальный просмотр сборки |
-| `npm run check` | проверка типов (astro check) |
-| `npm run lint` | ESLint (astro + typescript-eslint + react-hooks) |
-| `npm run format` | Prettier (astro + tailwindcss плагины) |
-| `npm run validate` | проверка `projects.json` (Zod, файл превью, один `example`) |
-| `npm run test:legal` | проверка собранной страницы `/terms/` (после `npm run build`) |
+| Команда              | Что делает                                                                               |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| `npm run dev`        | dev-сервер Astro (локально, вне Docker)                                                  |
+| `npm run build`      | валидация данных + сборка статики                                                        |
+| `npm run preview`    | локальный просмотр сборки                                                                |
+| `npm run check`      | проверка типов (astro check)                                                             |
+| `npm run lint`       | ESLint (astro + typescript-eslint + react-hooks)                                         |
+| `npm run format`     | Prettier (astro + tailwindcss плагины)                                                   |
+| `npm run validate`   | проверка `projects.json` (Zod, файл превью, один `example`)                              |
+| `npm run test:legal` | проверка собранной страницы `/terms/` (после `npm run build`)                            |
+| `npm run test:prod`  | проверка прод-заголовков, MIME, кэша, методов и скрытых файлов (нужен запущенный сервер) |
 
 ## Документы
 
 - `/terms/` — пользовательское соглашение: условия работы, оплаты, приёмки, возврата,
   конфиденциальности и реквизиты.
-- Ссылка на документ живёт в футере; отдельным пунктом в меню она не выводится.
+- Ссылка на документ есть в футере и в мобильном меню; в десктопную навигацию не выводится.
 - Страница индексируемая. При заданном `PUBLIC_SITE_URL` попадает в sitemap автоматически.
 
 ## Проверки качества
 
 - Lighthouse (последний прогон): Accessibility 100, Best Practices 100, SEO 100.
 - `/terms/`: Lighthouse Accessibility 100, Best Practices 100, SEO 100.
+- Прод: CSP с хэшами, `application/manifest+json`, `charset=utf-8`, относительный редирект `/terms` → `/terms/`.
+- Docker: `read_only`, `no-new-privileges`, порты только на `127.0.0.1` по умолчанию.
+- `/terms/` корректно печатается: заголовок, дата, полный текст и таблица возвратов.
 - Адаптив: 320 / 390 / 768 / 1024 / 1440 / 1920, mobile-first.
 - `prefers-reduced-motion`: анимации и WebGL-фон отключаются, остаётся CSS-fallback.
 - Контраст текста ≥ 4.5:1, видимый focus-visible, клавиатурная навигация.
@@ -115,7 +125,7 @@ VK_URL=
 
 ```
 ├── Dockerfile / Dockerfile.dev / docker-compose*.yml / nginx.conf
-├── scripts/                   # validate-projects, check-legal (проверка /terms/)
+├── scripts/                   # validate-projects, check-legal, check-headers
 ├── public/
 │   ├── fonts/                 # Manrope Variable (OFL-1.1)
 │   ├── portfolio/             # превью работ (4:3, ≤1200px)

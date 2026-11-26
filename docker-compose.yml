@@ -4,6 +4,8 @@ services:
   web:
     build:
       context: .
+      # Подтягивать свежие базовые образы при сборке
+      pull: true
       args:
         # Значения подставляются из .env в корне проекта.
         # Изменение ссылок требует пересборки: docker compose up --build
@@ -13,5 +15,19 @@ services:
     image: nikita-portfolio:latest
     container_name: nikita-portfolio
     ports:
-      - "8080:80"
+      # По умолчанию сайт доступен только с этого компьютера.
+      # Для просмотра с телефона: BIND_HOST=0.0.0.0 docker compose up --build
+      - "${BIND_HOST:-127.0.0.1}:8080:80"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     restart: unless-stopped

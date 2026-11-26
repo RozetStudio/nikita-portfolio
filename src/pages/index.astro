@@ -17,16 +17,19 @@ const description =
 
 <BaseLayout title="Никита — лендинги, Telegram-боты, сайты и скрипты" description={description}>
   <Header />
-  <main id="main">
+  <main id="main" tabindex="-1">
     <Hero />
     <Services />
     <Process />
-    <section id="portfolio" aria-labelledby="portfolio-title" class="relative py-20 sm:py-28 lg:py-32">
+    <section
+      id="portfolio"
+      aria-labelledby="portfolio-title"
+      class="relative py-20 sm:py-28 lg:py-32"
+    >
       <div
         aria-hidden="true"
         class="pointer-events-none absolute left-1/2 top-24 h-[380px] w-[720px] max-w-full -translate-x-1/2 rounded-full bg-white/[0.04] blur-[120px]"
-      >
-      </div>
+      ></div>
       <div class="container-page relative">
         <!-- Заголовок секции в Astro: React-остров не управляет reveal-узлами -->
         <div class="flex flex-col items-center gap-4 text-center" data-reveal>

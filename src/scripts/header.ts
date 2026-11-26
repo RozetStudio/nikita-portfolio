@@ -44,6 +44,7 @@ export function initHeader(): void {
     if (dialog.open || closing) return;
     dialog.showModal();
     setExpanded(true);
+    document.documentElement.classList.add("menu-open");
     // Lenis: не скроллить страницу за открытым меню
     document.dispatchEvent(new CustomEvent("site:menu-open"));
     if (prefersReducedMotion) {
@@ -56,11 +57,11 @@ export function initHeader(): void {
     });
   };
 
-  const closeMenu = () => {
+  const closeMenu = (instant = false) => {
     if (closing || !dialog.open) return;
     setExpanded(false);
-    if (prefersReducedMotion) {
-      // transitionend при 0.01ms может не прийти — закрываем сразу
+    if (instant || prefersReducedMotion) {
+      // Переход по ссылке не должен ждать анимацию закрытия
       dialog.classList.remove("is-open");
       dialog.close();
       return;
@@ -105,6 +106,7 @@ export function initHeader(): void {
 
   dialog.addEventListener("close", () => {
     dialog.classList.remove("is-open");
+    document.documentElement.classList.remove("menu-open");
     closing = false;
     setExpanded(false);
     // Lenis: возвращаем скролл страницы
@@ -112,15 +114,14 @@ export function initHeader(): void {
   });
 
   dialog.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => closeMenu());
+    // Переход по ссылке — без задержки на анимацию закрытия
+    link.addEventListener("click", () => closeMenu(true));
   });
 
   dialog.querySelector("[data-menu-close]")?.addEventListener("click", () => closeMenu());
 
   const links = Array.from(header.querySelectorAll<HTMLAnchorElement>("a[data-nav]"));
-  const linkById = new Map(
-    links.map((link) => [(link.getAttribute("href") ?? "").slice(1), link]),
-  );
+  const linkById = new Map(links.map((link) => [(link.getAttribute("href") ?? "").slice(1), link]));
   const sections = Array.from(linkById.keys())
     .map((id) => document.getElementById(id))
     .filter((el): el is HTMLElement => el !== null);

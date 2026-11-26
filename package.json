@@ -17,7 +17,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "validate": "node scripts/validate-projects.mjs",
-    "test:legal": "node scripts/check-legal.mjs"
+    "test:legal": "node scripts/check-legal.mjs",
+    "test:prod": "node scripts/check-headers.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",

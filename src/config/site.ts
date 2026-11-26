@@ -4,11 +4,9 @@ export const SITE_ROLE = "фриланс-разработчик";
 // TODO: задать реальный домен в .env (PUBLIC_SITE_URL)
 export const SITE_URL = (import.meta.env.PUBLIC_SITE_URL ?? "").trim();
 
-// Ссылки на профили. Пока не известны — оставлены пустыми.
+// Ссылки на профили. Задаются в .env; пустая строка → заглушка.
 // Кнопки с пустым значением показывают «Ссылка скоро появится».
-// TODO: заполнить позже (см. .env.example)
 export const TELEGRAM_URL = (import.meta.env.TELEGRAM_URL ?? "").trim();
-// TODO: заполнить позже (см. .env.example)
 export const VK_URL = (import.meta.env.VK_URL ?? "").trim();
 
 /** Пункты навигации (якоря главной страницы). */

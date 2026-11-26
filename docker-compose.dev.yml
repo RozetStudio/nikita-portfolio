@@ -5,10 +5,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      pull: true
     image: nikita-portfolio:dev
     container_name: nikita-portfolio-dev
     ports:
-      - "4321:4321"
+      # По умолчанию dev-сервер доступен только с этого компьютера.
+      - "${BIND_HOST:-127.0.0.1}:4321:4321"
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       # Исходники монтируются для hot reload; зависимости живут в named volume
       - .:/app
