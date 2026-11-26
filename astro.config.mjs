@@ -35,20 +35,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     server: {
-      // Локальные документы не должны отдаваться dev-сервером.
-      // Основная защита — порт, привязанный к 127.0.0.1 в compose.
-      fs: {
-        deny: [
-          ".env",
-          ".env.*",
-          "*.{crt,pem}",
-          "**/.git/**",
-          "**/AGENTS.md",
-          "**/HISTORY.md",
-          "**/skills-lock.json",
-          "**/.agents/**",
-        ],
-      },
       // Для dev-контейнера на Windows: hot reload через polling
       watch: {
         usePolling: process.env.CHOKIDAR_USEPOLLING === "true",

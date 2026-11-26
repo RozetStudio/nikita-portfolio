@@ -70,11 +70,11 @@ try {
   check(server === "nginx", `Server: «${server}» раскрывает версию или пуст`);
   check(!header(home, "x-powered-by"), "X-Powered-By не должен отдаваться");
 
-  for (const path of ["/.env", "/.git/config", "/.agents/skills/terms-of-service/SKILL.md"]) {
+  for (const path of ["/.env", "/.git/config"]) {
     const response = await request(path);
     check(response.status === 403, `${path}: ожидался 403, получен ${response.status}`);
   }
-  for (const path of ["/AGENTS.md", "/HISTORY.md", "/package.json", "/src/pages/index.astro"]) {
+  for (const path of ["/package.json", "/src/pages/index.astro"]) {
     const response = await request(path);
     check(response.status === 404, `${path}: ожидался 404, получен ${response.status}`);
   }

@@ -38,7 +38,7 @@ docker compose -f docker-compose.dev.yml up
 - Dev-контейнер монтирует исходники (`CHOKIDAR_USEPOLLING=true` для Windows), зависимости живут в named volume `node_modules`.
 - Продакшн и разработка могут работать одновременно (отдельные compose-проекты, порты 8080 и 4321).
 - По умолчанию оба порта привязаны к `127.0.0.1` и недоступны из локальной сети. Для просмотра с телефона:
-  `BIND_HOST=0.0.0.0 docker compose up --build`. Dev-сервер по умолчанию не отдаёт `.env`, `.git`, `AGENTS.md` и `HISTORY.md`.
+  `BIND_HOST=0.0.0.0 docker compose up --build`. Dev-сервер по умолчанию не отдаёт `.env` и `.git`.
 
 ## Переменные окружения
 
