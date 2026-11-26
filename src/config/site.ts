@@ -14,10 +14,13 @@ export function withBase(path: string): string {
   return `${BASE_PATH}${path.replace(/^\//, "")}`;
 }
 
-// Ссылки на профили. Задаются в .env; пустая строка → заглушка.
-// Кнопки с пустым значением показывают «Ссылка скоро появится».
-export const TELEGRAM_URL = (import.meta.env.TELEGRAM_URL ?? "").trim();
-export const VK_URL = (import.meta.env.VK_URL ?? "").trim();
+// Ссылки на профили. Значения из .env переопределяют дефолты;
+// пустая строка → используется публичный контакт ниже.
+const telegramEnv = (import.meta.env.TELEGRAM_URL ?? "").trim();
+const vkEnv = (import.meta.env.VK_URL ?? "").trim();
+
+export const TELEGRAM_URL = telegramEnv || "https://t.me/Last1deatH";
+export const VK_URL = vkEnv || "https://vk.ru/rs0100";
 
 /** Пункты навигации (якоря главной страницы). */
 export const NAV_LINKS = [
