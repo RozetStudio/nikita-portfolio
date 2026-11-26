@@ -1,37 +1,42 @@
 ---
 import { NAV_LINKS, SITE_NAME } from "@/config/site";
 import StarMark from "../ui/StarMark.astro";
+
+// На внутренних страницах якоря должны вести на главную: /terms#services
+// не существует, поэтому для неглавных страниц добавляем префикс "/".
+const isHome = Astro.url.pathname === "/";
+const homeHref = (hash: string) => (isHome ? hash : `/${hash}`);
 ---
 
 <header data-header class="fixed inset-x-0 top-0 z-50">
-  <div
-    class="mx-auto flex h-[72px] w-full max-w-[1152px] items-center justify-between gap-6 px-5 sm:px-8"
-  >
-    <a href="#top" class="flex items-center gap-2.5" aria-label="Никита — на главную">
-      <span
-        class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]"
-      >
+  <div class="mx-auto flex h-[72px] w-full max-w-[1152px] items-center justify-between gap-6 px-5 sm:px-8">
+    <a
+      href={isHome ? "#top" : "/"}
+      class="flex items-center gap-2.5"
+      aria-label="Никита — на главную"
+    >
+      <span class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]">
         <StarMark class="h-4 w-4 text-fg" />
       </span>
       <span class="text-[15px] font-semibold tracking-tight">{SITE_NAME}</span>
     </a>
 
     <nav aria-label="Основная навигация" class="hidden items-center gap-8 md:flex">
-      {
-        NAV_LINKS.map((link) => (
-          <a
-            data-nav
-            href={link.href}
-            class="text-sm text-fg-muted transition duration-200 hover:text-fg aria-[current=true]:text-fg"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {NAV_LINKS.map((link) => (
+        <a
+          data-nav
+          href={homeHref(link.href)}
+          class="text-sm text-fg-muted transition duration-200 hover:text-fg aria-[current=true]:text-fg"
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
 
     <div class="hidden md:block">
-      <a href="#contact" class="btn btn-primary btn-sm">Связаться</a>
+      <a href={homeHref("#contact")} class="btn btn-primary btn-sm">
+        Связаться
+      </a>
     </div>
 
     <!-- Бургер: две линии, морфятся в крестик при открытии меню -->
@@ -59,9 +64,7 @@ import StarMark from "../ui/StarMark.astro";
   <div class="flex h-full flex-col" data-menu-panel>
     <div class="flex h-[72px] items-center justify-between border-b border-line px-5 sm:px-8">
       <span class="flex items-center gap-2.5">
-        <span
-          class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]"
-        >
+        <span class="flex h-8 w-8 items-center justify-center rounded-[10px] border border-line bg-white/[0.04]">
           <StarMark class="h-4 w-4 text-fg" />
         </span>
         <span class="text-[15px] font-semibold tracking-tight">{SITE_NAME}</span>
@@ -89,20 +92,20 @@ import StarMark from "../ui/StarMark.astro";
       aria-label="Мобильная навигация"
       class="flex flex-1 flex-col items-start justify-center gap-2 px-5"
     >
-      {
-        NAV_LINKS.map((link) => (
-          <a
-            href={link.href}
-            data-menu-item
-            class="w-full rounded-2xl px-4 py-4 text-2xl font-semibold tracking-[-0.02em] text-fg-muted transition hover:bg-white/[0.04] hover:text-fg"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {NAV_LINKS.map((link) => (
+        <a
+          href={homeHref(link.href)}
+          data-menu-item
+          class="w-full rounded-2xl px-4 py-4 text-2xl font-semibold tracking-[-0.02em] text-fg-muted transition hover:bg-white/[0.04] hover:text-fg"
+        >
+          {link.label}
+        </a>
+      ))}
     </nav>
     <div class="px-5 pb-10" data-menu-item>
-      <a href="#contact" class="btn btn-primary w-full">Связаться</a>
+      <a href={homeHref("#contact")} class="btn btn-primary w-full">
+        Связаться
+      </a>
     </div>
   </div>
 </dialog>

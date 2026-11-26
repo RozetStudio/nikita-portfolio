@@ -87,10 +87,19 @@ VK_URL=
 | `npm run lint` | ESLint (astro + typescript-eslint + react-hooks) |
 | `npm run format` | Prettier (astro + tailwindcss плагины) |
 | `npm run validate` | проверка `projects.json` (Zod, файл превью, один `example`) |
+| `npm run test:legal` | проверка собранной страницы `/terms/` (после `npm run build`) |
+
+## Документы
+
+- `/terms/` — пользовательское соглашение: условия работы, оплаты, приёмки, возврата,
+  конфиденциальности и реквизиты.
+- Ссылка на документ живёт в футере; отдельным пунктом в меню она не выводится.
+- Страница индексируемая. При заданном `PUBLIC_SITE_URL` попадает в sitemap автоматически.
 
 ## Проверки качества
 
 - Lighthouse (последний прогон): Accessibility 100, Best Practices 100, SEO 100.
+- `/terms/`: Lighthouse Accessibility 100, Best Practices 100, SEO 100.
 - Адаптив: 320 / 390 / 768 / 1024 / 1440 / 1920, mobile-first.
 - `prefers-reduced-motion`: анимации и WebGL-фон отключаются, остаётся CSS-fallback.
 - Контраст текста ≥ 4.5:1, видимый focus-visible, клавиатурная навигация.
@@ -100,13 +109,13 @@ VK_URL=
 
 Репозиторий уже связан с `origin` (`https://github.com/RozetStudio/nikita-portfolio.git`).
 Обновления публикуются через GitHub Desktop: Fetch origin → Push (ветка `main`).
-Для экспериментов используйте ветку `test/landing`, затем быстрое слияние в `main`.
+Для экспериментов создавайте отдельную ветку от `main`; `test/landing` — архивная и не используется.
 
 ## Структура
 
 ```
 ├── Dockerfile / Dockerfile.dev / docker-compose*.yml / nginx.conf
-├── scripts/                   # validate-projects (prebuild)
+├── scripts/                   # validate-projects, check-legal (проверка /terms/)
 ├── public/
 │   ├── fonts/                 # Manrope Variable (OFL-1.1)
 │   ├── portfolio/             # превью работ (4:3, ≤1200px)
@@ -123,7 +132,7 @@ VK_URL=
     ├── data/projects.json     # ← данные портфолио
     ├── lib/                   # cn, format, projects (Zod)
     ├── layouts/BaseLayout.astro
-    ├── pages/                 # index, 404, robots.txt
+    ├── pages/                 # index, 404, terms, robots.txt
     ├── scripts/               # silk.ts, reveal, spotlight, smooth-scroll, header
     └── styles/global.css      # токены @theme, компонентные классы, grain и т.д.
 ```

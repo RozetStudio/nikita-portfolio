@@ -49,8 +49,16 @@ const year = new Date().getFullYear();
       )}
     </nav>
 
-    <p class="text-xs text-fg-dim">
-      © {year} {SITE_NAME}
-    </p>
+    <div class="flex flex-col items-center gap-1.5 sm:items-end">
+      <p class="text-xs text-fg-dim">
+        © {year} {SITE_NAME}
+      </p>
+      <a
+        href="/terms/"
+        class="text-xs text-fg-dim underline-offset-4 transition duration-200 hover:text-fg-muted hover:underline"
+      >
+        Пользовательское соглашение
+      </a>
+    </div>
   </div>
 </footer>
